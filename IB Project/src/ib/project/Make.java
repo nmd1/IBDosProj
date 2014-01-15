@@ -1,6 +1,7 @@
 package ib.project;
 import static ib.project.Main.main;
 import static ib.project.Main.prop;
+import static ib.project.Main.properties;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,37 +13,43 @@ import javax.swing.*;
 
 public class Make {
     Button next;
-    
+    Container buttonPane;
+    Checkbox timer;
     public Make() {
         
     }
     
     
-    static void QuizCreation() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void QuizCreation() {
+        prop.setVisible(true);
+        main.setVisible(false);
+        buttonPane = prop.getContentPane();
+        FlowLayout myLayout = new FlowLayout();
+        buttonPane.setLayout(myLayout);
+        buttons();
     }
 
     
     public void buttons() {
-        prop.setVisible(true);
-        main.setVisible(false);
-        
-        next = new Button("Make A Quiz");
+        next = new Button("Next");
         next.setPreferredSize(new Dimension(100,40));
         next.addActionListener(new more1());
+        timer = new Checkbox("Timed?");
+        timer.getState();
+        buttonPane.add(next);
     }
     
-    
-    
-    
-    
-    
-    
-    
-    private static class more1 implements ActionListener {
+    private class more1 implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            //add next things
+            
+            if(timer.getState()) {
+               properties = properties + "Timer = true";
+            }
         }
+    public int timer(int t, boolean a) {
+        
+        return 0;
+    }
     }
 }

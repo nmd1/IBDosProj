@@ -19,7 +19,7 @@ public class Main extends JPanel {
     static Checkbox check;
     static Component d;
     public static Choice equations;
-    
+    static String properties; 
     public static void main(String[] args) {
         //Main Properties//
         main = new JFrame();
@@ -27,6 +27,7 @@ public class Main extends JPanel {
         newPanel(main);
         main.setSize(500,300);
         main.setVisible(true);
+        main.setResizable(true);
         //main.add() //We'll see if we need this later
         
         //make Properties Properties//
@@ -82,9 +83,8 @@ public class Main extends JPanel {
     private static class making implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            prop.setVisible(true);
-            main.setVisible(false);
-            //IBproj.QuizCreation();
+            Make p = new Make();
+            p.QuizCreation();
         }
     }
     public static class taking implements ActionListener {
@@ -97,7 +97,7 @@ public class Main extends JPanel {
     public static void newPanel(JFrame j) {
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         j.setLocationRelativeTo(null);
-        j.setResizable(false);
+        j.setResizable(true);
         
         if(j.getTitle().equals("Main Menu")) {
             j.setVisible(true);
