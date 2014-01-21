@@ -20,6 +20,7 @@ public class Main extends JPanel {
     static Component d;
     public static Choice equations;
     static String properties; 
+    static boolean debug = true;
     public static void main(String[] args) {
         //Main Properties//
         main = new JFrame();
