@@ -48,63 +48,39 @@ public class Make {
         repeat = new Checkbox("Repeat Exam?");
         //======If the repeat checkbox is selected open a textbox======
         buttonPane.add(Re);
+        
         repeat.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 
                 if (e.getStateChange() == ItemEvent.SELECTED) { //if the checkbox is selected
+                    String wait = "";
                     if (debug == true) System.out.println("True line reached");
                     String Options[] = {"Ok"};
                     ImageIcon a = new ImageIcon();
-                            final JOptionPane optionpane = new JOptionPane(JOptionPane.showInputDialog(null,
-                            "Input Amount of Times to repeat",
-                            "Repeat",JOptionPane.QUESTION_MESSAGE,
-                            a,null, null));
+                    boolean breaks = true;
+                    int first = 0;
+                    while(breaks){ //keep looping until the input is correct
+                            String response;
+                            response = JOptionPane.showInputDialog(null, 
+                                "Input Amount of Times to repeat", 
+                                "Repeat", JOptionPane.QUESTION_MESSAGE);
+                            if ((response != null) && (response.length() > 0)) {
+                                if(isNumeric(response)) {
+                                wait = response;
+                                breaks = false;
+                                }
+                            } else {
+                                 repeat.setState(false);   
+                            }
                             
-                    //===========Stop a bad input==========
-                    Frame ab = new Frame();
-                    final JDialog dialog = new JDialog(ab, "A Number", true);
-                    dialog.setContentPane(optionpane);
-                    dialog.setDefaultCloseOperation(
-                        JDialog.DO_NOTHING_ON_CLOSE);
-                        dialog.addWindowListener(new WindowAdapter() {
-                            public void windowClosing(WindowEvent we) {
-                               if(debug == true) System.out.println("Thwarted user attempted to close window.");
+                            if(response.equals("")) {
+                                repeat.setState(false);  
                             }
-                        });
-                    optionpane.addPropertyChangeListener(
-                    new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent e) {
-                        String prop = e.getPropertyName();
-
-                        if (dialog.isVisible() 
-                        && (e.getSource() == optionpane)
-                        && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
-                            //If you were going to check something
-                            //before closing the window, you'd do
-                            //it here.
-                            dialog.setVisible(false);
-                            }
-                        }
-                    });
-                    dialog.pack();
-                    dialog.setVisible(true);   
-                    
-                    int value = ((Integer)optionpane.getValue()).intValue();
-                    if (value == JOptionPane.YES_OPTION) {
-                        if(debug == true) System.out.println("Good.");
-                    } else if (value == JOptionPane.NO_OPTION) {
-                        if(debug == true) System.out.println("Try using the window decorations "
-                            + "to close the non-auto-closing dialog. "
-                            + "You can't!");
-}
-                    //=======end========
-                    Object repeatTime = optionpane;        
+                    }      
                     Re.setVisible(true);
-                    
                     //JOptionPane.show
-                    
-                    Re.setText(repeatTime.toString());
+                    Re.setText(wait);
                     } else {
                     if (debug == true) System.out.println("False line reached");
                     Re.setVisible(false);
@@ -113,6 +89,9 @@ public class Make {
         });
         //==                         end                            ==
         buttonPane.add(repeat);
+        if(!Re.equals("")) {
+            repeat.setState(false);
+        }
     }
     
     
@@ -136,5 +115,15 @@ public class Make {
             }
             
         }
+    }
+    
+    public static boolean isNumeric(String str)  {  
+        try {  
+            double d = Double.parseDouble(str);  
+        }  
+        catch(NumberFormatException nfe) {  
+            return false;  
+        }  
+        return true;  
     }
 }
