@@ -16,7 +16,10 @@ public class Make {
     Button next;
     Container buttonPane;
     Checkbox timer, repeat;
-    Label Re = new Label();
+    Checkbox Cone, Ctwo, Cthree, Cfour, Cfive;
+    Label Re = new Label(), Ti = new Label();
+    CheckboxGroup PerQuest = new CheckboxGroup();
+    TextField QuestNum = new TextField();
     public Make() {
         
     }
@@ -28,102 +31,121 @@ public class Make {
         buttonPane = prop.getContentPane();
         FlowLayout myLayout = new FlowLayout();
         buttonPane.setLayout(myLayout);
-        buttons();
-        checkBox();
+        Buttons();
+        Checkbox();
+        Options();
     }
-
     
-    public void buttons() {
+    public void Buttons() {
         next = new Button("Next");
         next.setPreferredSize(new Dimension(100,40));
-        next.addActionListener(new more1());
+        next.addActionListener(new prop());
         buttonPane.add(next);
         
     }
-    public void checkBox() {
-        timer = new Checkbox("Timed?");
-        timer.getState();
-        buttonPane.add(timer);
+
+    
+    public void Checkbox() {
+        timer = new Checkbox("Timed?");buttonPane.add(timer);
+        theIL(timer, Ti, "How long (In Seconds) should the quiz last", "Time");
+        repeat = new Checkbox("Repeat Exam?"); buttonPane.add(repeat);
+        theIL(repeat, Re, "Input Amount of Times to repeat","Repeat");
+        buttonPane.add(Ti); buttonPane.add(Re);
+    }
+    public void theIL(final Checkbox but, final Label l, final String ask, final String title) {
         
-        repeat = new Checkbox("Repeat Exam?");
-        //======If the repeat checkbox is selected open a textbox======
-        buttonPane.add(Re);
-        
-        repeat.addItemListener(new ItemListener() {
+        but.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 
                 if (e.getStateChange() == ItemEvent.SELECTED) { //if the checkbox is selected
-                    String wait = "";
-                    if (debug == true) System.out.println("True line reached");
-                    String Options[] = {"Ok"};
-                    ImageIcon a = new ImageIcon();
-                    boolean breaks = true;
-                    int first = 0;
-                    while(breaks){ //keep looping until the input is correct
-                            String response;
-                            response = JOptionPane.showInputDialog(null, 
-                                "Input Amount of Times to repeat", 
-                                "Repeat", JOptionPane.QUESTION_MESSAGE);
-                            if ((response != null) && (response.length() > 0)) {
-                                if(isNumeric(response)) {
-                                wait = response;
-                                breaks = false;
+                    String wait = ""; //creates a empty string to write to
+                    if (debug == true) System.out.println("True line reached"); //debug
+                    boolean breaks = true; //to stop the while loop
+                    while(breaks) { //keep looping until the input is correct
+                        String response; //the input from the question box
+                        response = JOptionPane.showInputDialog(null, 
+                                ask, title, JOptionPane.QUESTION_MESSAGE); //gets the response
+                        if ((response != null) && (response.length() > 0)) { //tests if the response exists
+                            if(isNum(response)) { //if it does, tests if its a number
+                                wait = response; //if its a number, the empty string at the top becomes that number
+                                breaks = false; //stops the loop
                                 }
-                            } else {
-                                 repeat.setState(false);   
-                            }
-                            
-                            if(response.equals("")) {
-                                repeat.setState(false);  
-                            }
-                    }      
-                    Re.setVisible(true);
+                        } else { //if its empty
+                            but.setState(false); //uncheck the checkbox
+                        }   
+                        if(null == response) { //checks if the reponse if null
+                            but.setState(false); //if it is, uncheck the checkbox
+                            breaks = false; //and leave the loop
+                        }
+                    } //end of loop
+                    
+                    l.setVisible(true); //set the label to visible
                     //JOptionPane.show
-                    Re.setText(wait);
-                    } else {
+                    l.setText(wait); //change the text of the label to the resonse
+                    } else { //if the checkbox is unselected
                     if (debug == true) System.out.println("False line reached");
-                    Re.setVisible(false);
+                    l.setVisible(false); //remove the label
                     }   
            }
         });
-        //==                         end                            ==
-        buttonPane.add(repeat);
-        if(!Re.equals("")) {
-            repeat.setState(false);
-        }
+        
+    }
+    public boolean isNum(String s)  {  
+        try {  
+            double temp = Double.parseDouble(s);  
+        }  
+        catch(NumberFormatException e) {  
+            return false;  
+        }  
+        return true;  
     }
     
-    
-    private class more1 implements ActionListener {
+    public void Options() {
+         Cone = new Checkbox("One",true,PerQuest);//one.getState();
+         Ctwo = new Checkbox("two",false,PerQuest);
+         Cthree = new Checkbox("three",false,PerQuest);
+         Cfour = new Checkbox("four",false,PerQuest);
+         Cfive = new Checkbox("five",false,PerQuest);
+         buttonPane.add(Cone);
+         buttonPane.add(Ctwo);
+         buttonPane.add(Cthree);
+         buttonPane.add(Cfour);
+         buttonPane.add(Cfive);
+    }
+    public void Textfield() {
+        //Alright, today, work on this.
+    }
+    private class prop implements ActionListener {
+        //When Next is presed, go to the next screen and place all the properties
+        //in the properties string.
         @Override
         public void actionPerformed(ActionEvent ae) {
-            
+            properties = "";
             if (debug == true) System.out.println("Timer is " + timer.getState());
             if(timer.getState()) {
                properties = properties + "Timer = true\n";
+               properties = properties + "TimerValue = " + Ti.getText() + "\n";
             } else {
                 properties = properties + "Timer = false\n";
             }
             
-            if (debug == true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
+            if (debug == true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText() + "\n");
             if(repeat.getState()) {
-                properties = properties + "Repeat = true";
-                properties = properties + "RepeatValue = " + Re.getText();
+                properties = properties + "Repeat = true\n";
+                properties = properties + "RepeatValue = " + Re.getText() + "\n";
             } else {
-                properties = properties + "Repeat = false";
+                properties = properties + "Repeat = false\n";
             }
             
+            if(PerQuest.getSelectedCheckbox() == Cone) properties = properties + "PerQuest = 1\n";
+            if(PerQuest.getSelectedCheckbox() == Ctwo) properties = properties + "PerQuest = 2\n";
+            if(PerQuest.getSelectedCheckbox() == Cthree) properties = properties + "PerQuest = 3\n";
+            if(PerQuest.getSelectedCheckbox() == Cfour) properties = properties + "PerQuest = 4\n";
+            if(PerQuest.getSelectedCheckbox() == Cfive) properties = properties + "PerQuest = 5\n";
+            
+            if (debug == true) System.out.println("\nPROPERTIES\n" + properties);
+            
         }
-    }
-    
-    public static boolean isNumeric(String str)  {  
-        try {  
-            double d = Double.parseDouble(str);  
-        }  
-        catch(NumberFormatException nfe) {  
-            return false;  
-        }  
-        return true;  
     }
 }
