@@ -19,7 +19,8 @@ public class Main extends JPanel {
     static Checkbox check;
     static Component d;
     public static Choice equations;
-    static String properties; 
+    //static String properties;
+    static ArrayList<String> properties = new ArrayList<String>();
     static boolean debug = true;
     public static void main(String[] args) {
         //Main Properties//

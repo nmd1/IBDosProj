@@ -15,11 +15,11 @@ import javax.swing.*;
 public class Make {
     Button next;
     Container buttonPane;
-    Checkbox timer, repeat;
+    Checkbox timer, repeat, tryA;
     Checkbox Cone, Ctwo, Cthree, Cfour, Cfive;
-    Label Re = new Label(), Ti = new Label();
+    Label Re = new Label(), Ti = new Label(), Nq = new Label();
     CheckboxGroup PerQuest = new CheckboxGroup();
-    TextField QuestNum = new TextField();
+    TextField QuestNum;
     public Make() {
         
     }
@@ -29,11 +29,12 @@ public class Make {
         prop.setVisible(true);
         main.setVisible(false);
         buttonPane = prop.getContentPane();
-        FlowLayout myLayout = new FlowLayout();
+        FlowLayout myLayout = new FlowLayout(FlowLayout.CENTER, 10,10); //lets focus on this
         buttonPane.setLayout(myLayout);
         Buttons();
         Checkbox();
         Options();
+        Textfield();
     }
     
     public void Buttons() {
@@ -50,6 +51,9 @@ public class Make {
         theIL(timer, Ti, "How long (In Seconds) should the quiz last", "Time");
         repeat = new Checkbox("Repeat Exam?"); buttonPane.add(repeat);
         theIL(repeat, Re, "Input Amount of Times to repeat","Repeat");
+        tryA = new Checkbox("Try Again?"); buttonPane.add(tryA);
+        Ti.setPreferredSize(new Dimension(100,40));
+        Re.setPreferredSize(new Dimension(100,40));
         buttonPane.add(Ti); buttonPane.add(Re);
     }
     public void theIL(final Checkbox but, final Label l, final String ask, final String title) {
@@ -115,37 +119,54 @@ public class Make {
     }
     public void Textfield() {
         //Alright, today, work on this.
+        //seriously, saterday, work on this
+        QuestNum = new TextField();
+        Nq.setText("Numer of Questions Displayed"); 
+        buttonPane.add(Nq);
+        buttonPane.add(QuestNum);
     }
     private class prop implements ActionListener {
         //When Next is presed, go to the next screen and place all the properties
         //in the properties string.
         @Override
-        public void actionPerformed(ActionEvent ae) {
-            properties = "";
-            if (debug == true) System.out.println("Timer is " + timer.getState());
+        public void actionPerformed(ActionEvent ae) {//turn this into an arrayList
+            if (debug = true) System.out.println("Timer is " + timer.getState());
+            
             if(timer.getState()) {
-               properties = properties + "Timer = true\n";
-               properties = properties + "TimerValue = " + Ti.getText() + "\n";
+               properties.add("Timer = true");
+               properties.add("TimerValue = " + Ti.getText());
             } else {
-                properties = properties + "Timer = false\n";
+                properties.add("Timer = false");
             }
             
-            if (debug == true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText() + "\n");
+            if (debug = true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
             if(repeat.getState()) {
-                properties = properties + "Repeat = true\n";
-                properties = properties + "RepeatValue = " + Re.getText() + "\n";
+                properties.add( "Repeat = true");
+                properties.add("RepeatValue = " + Re.getText());
             } else {
-                properties = properties + "Repeat = false\n";
+                properties.add("Repeat = false");
+            }
+        
+            if(tryA.getState()) {
+                properties.add("TryAgain = true");
+            } else {
+                properties.add("TryAgain = false");
             }
             
-            if(PerQuest.getSelectedCheckbox() == Cone) properties = properties + "PerQuest = 1\n";
-            if(PerQuest.getSelectedCheckbox() == Ctwo) properties = properties + "PerQuest = 2\n";
-            if(PerQuest.getSelectedCheckbox() == Cthree) properties = properties + "PerQuest = 3\n";
-            if(PerQuest.getSelectedCheckbox() == Cfour) properties = properties + "PerQuest = 4\n";
-            if(PerQuest.getSelectedCheckbox() == Cfive) properties = properties + "PerQuest = 5\n";
+            if(PerQuest.getSelectedCheckbox() == Cone) properties.add("PerQuest = 1");
+            if(PerQuest.getSelectedCheckbox() == Ctwo) properties.add("PerQuest = 2");
+            if(PerQuest.getSelectedCheckbox() == Cthree) properties.add("PerQuest = 3");
+            if(PerQuest.getSelectedCheckbox() == Cfour) properties.add("PerQuest = 4");
+            if(PerQuest.getSelectedCheckbox() == Cfive) properties.add("PerQuest = 5");
             
-            if (debug == true) System.out.println("\nPROPERTIES\n" + properties);
-            
+            if (debug = true) System.out.println("\nPROPERTIES" + properties);
+            /*
+            0 refers to the If there is a timer
+            1 refers to the timer value (may not exist)
+            2 refers to the If there is a repeat
+            3 refers to the Repeat value
+            4 refers to how many options will be in each question of the quiz
+            */
         }
     }
 }
