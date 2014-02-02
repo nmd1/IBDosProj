@@ -13,14 +13,15 @@ import java.io.*;
 import javax.swing.*;
 
 public class Make {
-    Button next;
-    Container buttonPane;
+    Button nextQ, next;
+    Container buttonPane, buttonPane2;
     Checkbox timer, repeat, tryA;
     Checkbox Cone, Ctwo, Cthree, Cfour, Cfive;
     Label Re = new Label(), Ti = new Label(), Nq = new Label(), Pc = new Label();
     Label[] Empty = {new Label(), new Label(), new Label()};
     CheckboxGroup PerQuest = new CheckboxGroup();
-    TextField QuestNum, PercentNum;
+    TextField QuestNum, PercentNum, a,b,c,d,e;
+    TextArea Question;
     Choice s;
     public Make() {
         
@@ -33,7 +34,12 @@ public class Make {
         buttonPane = prop.getContentPane();
         FlowLayout myLayout = new FlowLayout(FlowLayout.CENTER, 10,10); //lets focus on this
         buttonPane.setLayout(myLayout);
+        buttonPane.setName("HAIIII");
+        buttonPane2 = prop.getContentPane();
+        buttonPane2.setLayout(myLayout);
+        
         ordered();
+        
         Buttons();
         Checkbox();
         Options();
@@ -54,12 +60,14 @@ public class Make {
         buttonPane.add(QuestNum);
         PercentNum = new TextField("",1); buttonPane.add(Pc);
         buttonPane.add(PercentNum);
-        next = new Button("Next");buttonPane.add(next);
+        nextQ = new Button("Next");buttonPane.add(nextQ);
+        a = new TextField("", 10); buttonPane2.add(a);
+        setState(true);
     }
     
     public void Buttons() {
-        next.setPreferredSize(new Dimension(100,40));
-        next.addActionListener(new prop()); 
+        nextQ.setPreferredSize(new Dimension(100,40));
+        nextQ.addActionListener(new prop()); 
     }
 
     
@@ -235,12 +243,6 @@ public class Make {
             } else {
                 properties.add("Repeat = false");
             }
-        
-            if(tryA.getState()) {
-                properties.add("TryAgain = true");
-            } else {
-                properties.add("TryAgain = false");
-            }
             
             if(PerQuest.getSelectedCheckbox() == Cone) properties.add("PerQuest = 1");
             if(PerQuest.getSelectedCheckbox() == Ctwo) properties.add("PerQuest = 2");
@@ -255,6 +257,8 @@ public class Make {
                 properties.add("PercentNum = 100");
             
             if (debug = true) System.out.println("\nPROPERTIES" + properties);
+            
+            QuestionsIn();
             /*
             0 refers to the If there is a timer
             1 refers to the timer value (may not exist)
@@ -263,5 +267,29 @@ public class Make {
             4 refers to how many options will be in each question of the quiz
             */
         }
+    }
+    
+    public void setState(boolean state) {
+            timer.setEnabled(state);
+            repeat.setEnabled(state);
+            QuestNum.setEnabled(state);
+            PercentNum.setEnabled(state);
+            Cone.setEnabled(state);
+            Ctwo.setEnabled(state);
+            Cthree.setEnabled(state);
+            Cfour.setEnabled(state);
+            Cfive.setEnabled(state);
+            Ti.setEnabled(state);
+            Re.setEnabled(state);
+            Pc.setEnabled(state);
+            Nq.setEnabled(state);  
+    }
+    
+    public void QuestionsIn() {
+        setState(false);
+        nextQ.setLabel("Back");
+        a = new TextField();
+        
+        
     }
 }
