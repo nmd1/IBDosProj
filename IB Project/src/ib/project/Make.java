@@ -13,18 +13,28 @@ import java.io.*;
 import javax.swing.*;
 
 public class Make {
-    Button nextQ, next;
-    Container buttonPane, buttonPane2;
+    Button nextQ, submit;
+    Container buttonPane;
     Checkbox timer, repeat, tryA;
-    Checkbox Cone, Ctwo, Cthree, Cfour, Cfive;
+    Checkbox Ctwo, Cthree, Cfour, Cfive;
     Label Re = new Label(), Ti = new Label(), Nq = new Label(), Pc = new Label();
-    Label[] Empty = {new Label(), new Label(), new Label()};
+    SpringLayout layout = new SpringLayout();
+    Label[] Empty = new Label[100];
     CheckboxGroup PerQuest = new CheckboxGroup();
     TextField QuestNum, PercentNum, a,b,c,d,e;
     TextArea Question;
     Choice s;
+    int xc,yc;
     public Make() {
-        
+        prop.addMouseListener(new PanelListener());
+    }
+        private class PanelListener extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            xc = e.getX();
+            yc = e.getY();
+            System.out.println("(" + (xc - 8) + ", " + (yc - 30) + ")");
+        }
     }
     
     
@@ -32,26 +42,44 @@ public class Make {
         prop.setVisible(true);
         main.setVisible(false);
         buttonPane = prop.getContentPane();
-        FlowLayout myLayout = new FlowLayout(FlowLayout.CENTER, 10,10); //lets focus on this
-        buttonPane.setLayout(myLayout);
-        buttonPane.setName("HAIIII");
-        buttonPane2 = prop.getContentPane();
-        buttonPane2.setLayout(myLayout);
-        
-        ordered();
-        
+        //FlowLayout myLayout = new FlowLayout(FlowLayout.CENTER, 10,10); //lets focus on this
+        buttonPane.setLayout(layout);
+        ordered();   
         Buttons();
         Checkbox();
         Options();
         Textfield();
     }
-    
+    public void Layout(Component c, int x, int y) {
+        layout.putConstraint(SpringLayout.WEST, c,x, SpringLayout.WEST, buttonPane);
+        layout.putConstraint(SpringLayout.NORTH, c,y,SpringLayout.NORTH, buttonPane);
+    }
+    public void Layouts() {
+        int x=0,y=0;
+        Layout(timer, x+50, y+10); Layout(Ti, x+130, y+14);
+        Layout(repeat, x+230, y+10); Layout(Re, x+355, y+14);
+        Layout(Ctwo, x+150, y+40);
+        Layout(Cthree, x+200, y+40);
+        Layout(Cfour, x+250, y+40);
+        Layout(Cfive, x+300, y+40);
+        Layout(QuestNum, x+170, y+75);Layout(Nq, x+40, y+75);
+        Layout(PercentNum, x+425, y+75);Layout(Pc, x+220, y+75);
+        Layout(nextQ, x+185, y+115);
+        
+        
+        int xx = -10;
+        int yy = 60;
+        Layout(a, xx+80, yy+225);
+        Layout(b, xx+80, yy+260);
+        Layout(c, xx+80, yy+285);
+        Layout(d, xx+80, yy+310);
+        Layout(e, xx+80, yy+335);
+        Layout(Question, 70, 180);
+    }
     public void ordered() {
+        for(Label i : Empty) {i = new Label();}
         timer = new Checkbox("Timed?");buttonPane.add(timer);buttonPane.add(Ti);
         repeat = new Checkbox("Repeat Exam?"); buttonPane.add(repeat);buttonPane.add(Re);
-        //tryA = new Checkbox("Try Again?"); buttonPane.add(tryA);
-        Empty[0].setPreferredSize(new Dimension(50, 10));buttonPane.add(Empty[0]);
-        Cone = new Checkbox("One",true,PerQuest);buttonPane.add(Cone);//one.getState();
         Ctwo = new Checkbox("two",false,PerQuest);buttonPane.add(Ctwo);
         Cthree = new Checkbox("three",false,PerQuest);buttonPane.add(Cthree);
         Cfour = new Checkbox("four",false,PerQuest);buttonPane.add(Cfour);
@@ -61,7 +89,17 @@ public class Make {
         PercentNum = new TextField("",1); buttonPane.add(Pc);
         buttonPane.add(PercentNum);
         nextQ = new Button("Next");buttonPane.add(nextQ);
-        a = new TextField("", 10); buttonPane2.add(a);
+        a = new TextField("", 45); buttonPane.add(a);
+        b = new TextField("", 45); buttonPane.add(b);
+        c = new TextField("", 45); buttonPane.add(c);
+        d = new TextField("", 45); buttonPane.add(d);
+        e = new TextField("", 45); buttonPane.add(e);
+        Question = new TextArea(5, 46);
+        //Question.setSize(new Dimension(23,23)); 
+        System.out.print("This is ");
+        Question.setRows(5);buttonPane.add(Question);
+        System.out.println("Sparta.");
+        Layouts();
         setState(true);
     }
     
@@ -69,8 +107,6 @@ public class Make {
         nextQ.setPreferredSize(new Dimension(100,40));
         nextQ.addActionListener(new prop()); 
     }
-
-    
     public void Checkbox() {
         theIL(timer, Ti, "How long (In Minutes) should the quiz last", "Time");
         theIL(repeat, Re, "Input Amount of Times to repeat","Repeat"); 
@@ -226,6 +262,10 @@ public class Make {
         //in the properties string.
         @Override
         public void actionPerformed(ActionEvent ae) {//turn this into an arrayList
+            if(debug == true) System.out.println(ae.paramString());
+            if(nextQ.getLabel().equalsIgnoreCase("next")) {
+                
+            
             properties.clear();
             if (debug = true) System.out.println("Timer is " + timer.getState());
             
@@ -244,7 +284,6 @@ public class Make {
                 properties.add("Repeat = false");
             }
             
-            if(PerQuest.getSelectedCheckbox() == Cone) properties.add("PerQuest = 1");
             if(PerQuest.getSelectedCheckbox() == Ctwo) properties.add("PerQuest = 2");
             if(PerQuest.getSelectedCheckbox() == Cthree) properties.add("PerQuest = 3");
             if(PerQuest.getSelectedCheckbox() == Cfour) properties.add("PerQuest = 4");
@@ -256,8 +295,7 @@ public class Make {
             else
                 properties.add("PercentNum = 100");
             
-            if (debug = true) System.out.println("\nPROPERTIES" + properties);
-            
+            if (debug = true) System.out.println("\nPROPERTIES" + properties);            
             QuestionsIn();
             /*
             0 refers to the If there is a timer
@@ -266,6 +304,12 @@ public class Make {
             3 refers to the Repeat value
             4 refers to how many options will be in each question of the quiz
             */
+            } else if(nextQ.getLabel().equalsIgnoreCase("back")) {
+                setState(true);
+                prop.setSize(500, 200);
+                nextQ.setLabel("Next");
+                //erase info?
+            }
         }
     }
     
@@ -274,7 +318,6 @@ public class Make {
             repeat.setEnabled(state);
             QuestNum.setEnabled(state);
             PercentNum.setEnabled(state);
-            Cone.setEnabled(state);
             Ctwo.setEnabled(state);
             Cthree.setEnabled(state);
             Cfour.setEnabled(state);
@@ -282,14 +325,19 @@ public class Make {
             Ti.setEnabled(state);
             Re.setEnabled(state);
             Pc.setEnabled(state);
-            Nq.setEnabled(state);  
+            Nq.setEnabled(state);
+            
+            a.setEnabled(!state);
+            b.setEnabled(!state);
+            c.setEnabled(!state);
+            d.setEnabled(!state);
+            e.setEnabled(!state);
+            Question.setEnabled(!state);
     }
     
     public void QuestionsIn() {
         setState(false);
         nextQ.setLabel("Back");
-        a = new TextField();
-        
-        
+        prop.setSize(500,550);
     }
 }

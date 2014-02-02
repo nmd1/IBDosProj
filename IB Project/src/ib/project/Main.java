@@ -22,12 +22,13 @@ public class Main extends JPanel {
     //static String properties;
     static ArrayList<String> properties = new ArrayList<String>();
     static boolean debug = true;
+    int xd, yd;
     public static void main(String[] args) {
         //Main Properties//
         main = new JFrame();
         main.setTitle("Main Menu");
         newPanel(main);
-        main.setSize(500,300);
+        main.setSize(500,500);
         main.setVisible(true);
         main.setResizable(true);
         //main.add() //We'll see if we need this later
@@ -35,8 +36,9 @@ public class Main extends JPanel {
         //make Properties Properties//
         prop = new JFrame();
         prop.setTitle("Set Properties");
-        prop.setSize(500,500);
+        prop.setSize(500,200);
         newPanel(prop);
+        
         
         //take start properties//
         start = new JFrame();
@@ -87,6 +89,7 @@ public class Main extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             Make p = new Make();
             p.QuizCreation();
+            prop.repaint();
         }
     }
     public static class taking implements ActionListener {
