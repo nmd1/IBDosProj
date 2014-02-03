@@ -7,9 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.*;
 import javax.swing.*;
 
 public class Make {
@@ -42,6 +39,7 @@ public class Make {
     public void QuizCreation() {
         prop.setVisible(true);
         main.setVisible(false);
+        save.setVisible(false);
         buttonPane = prop.getContentPane();
         //FlowLayout myLayout = new FlowLayout(FlowLayout.CENTER, 10,10); //lets focus on this
         buttonPane.setLayout(layout);
@@ -446,7 +444,8 @@ public class Make {
                 if(ready) {
                     if(debug == true)  System.out.println("QUESTIONS:" + QuestA + 
                         "\n" + "ANSWERS:" + RAnswer + "\n" + "WRONG:" + WAnswer);                          
-                //move on to the Final Make screen.
+                Save s = new Save();
+                s.Saving();
                 }
             }
         }

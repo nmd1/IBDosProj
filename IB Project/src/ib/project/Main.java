@@ -11,7 +11,7 @@ import javax.swing.*;
 
 public class Main extends JPanel {
     
-    public static JFrame main, prop, start;
+    public static JFrame main, prop, start, save;
     static Container pane;
     static TextArea area;
     static TextField txtName, a1, b1, c1, m1;
@@ -31,7 +31,7 @@ public class Main extends JPanel {
         main.setTitle("Main Menu");
         newPanel(main);
         main.setSize(500,200);
-        main.setVisible(true);
+        main.setVisible(false);
         main.setResizable(true);
         //main.add() //We'll see if we need this later
         
@@ -41,7 +41,13 @@ public class Main extends JPanel {
         prop.setSize(500,200);
         newPanel(prop);
         
-        
+        //Make Save properties
+        save = new JFrame();
+        save.setTitle("What would you like to do with your Quiz?");
+        save.setSize(400,250);
+        newPanel(save); /*to delete*/save.setVisible(true);
+        Save s = new Save(); s.Saving();
+       
         //take start properties//
         start = new JFrame();
         start.setTitle("Choose a Quiz");
