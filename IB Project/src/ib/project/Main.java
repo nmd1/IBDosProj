@@ -31,7 +31,7 @@ public class Main extends JPanel {
         main.setTitle("Main Menu");
         newPanel(main);
         main.setSize(500,200);
-        main.setVisible(false);
+        main.setVisible(true);
         main.setResizable(true);
         //main.add() //We'll see if we need this later
         

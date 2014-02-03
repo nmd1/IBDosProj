@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class Save {
     //global variables
-    Button SavetoText, SaveandTake, TakeQuiz, leave;
+    Button SavetoText, SaveandTake, TakeQuiz, leave, mainB;
     Container saverPane;
     JFileChooser fc = new JFileChooser();
     SpringLayout layout = new SpringLayout();
@@ -41,7 +41,9 @@ public class Save {
         SaveandTake = new Button("Save to a text file and take quiz now"); saverPane.add(SaveandTake);
         TakeQuiz = new Button("Take the quiz without saving quiz info"); saverPane.add(TakeQuiz);
         leave = new Button("Exit");
+        mainB = new Button("Main Menu");
         leave.setPreferredSize(new Dimension(100,40));
+        mainB.setPreferredSize(new Dimension(100,40));
         SavetoText.setPreferredSize(a);
         SaveandTake.setPreferredSize(a);
         TakeQuiz.setPreferredSize(a);
@@ -49,6 +51,7 @@ public class Save {
         SaveandTake.addActionListener(new SaT());
         TakeQuiz.addActionListener(new TQ());
         leave.addActionListener(new Exit());
+        mainB.addActionListener(new Menu());
     }
     public void Layout(Component c, int x, int y) {
         layout.putConstraint(SpringLayout.WEST, c,x, SpringLayout.WEST, saverPane);
@@ -86,9 +89,12 @@ public class Save {
                 Layout(Sucess, 10, 10);
                 Sucess.setText("Your quiz has been saved sucessfully");
                 Font f = new Font("Verdana", Font.BOLD, 24);
+                save.setSize(470,160);
                 Sucess.setFont(f);
                 saverPane.add(leave);
-                Layout(leave, 130, 120);
+                saverPane.add(mainB);
+                Layout(leave, 270, 60);
+                Layout(mainB, 80, 60);
                 
             } catch (IOException e) {
                 System.out.println("problem accessing file"+file.getAbsolutePath());
@@ -111,6 +117,7 @@ public class Save {
         @Override
         public void actionPerformed(ActionEvent ae) {
             file("Save and Take Quiz");
+            //now, go to take
         }
     }
     private class TQ implements ActionListener {
@@ -122,18 +129,18 @@ public class Save {
     private class Exit implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            int choice = JOptionPane.showConfirmDialog(null, 
-                        "Would you like to exit the QuizCreater? No for mainscreen", 
-                        "Exit", JOptionPane.YES_NO_OPTION);// yes = 0 no = 1
-            if(choice == 0) System.exit(choice); //WOOO EXIT POINT
-            if(choice == 1) {
-                if(debug = true) System.out.println("Main Menu");    
-                save.setVisible(false);
-                main.setVisible(true);
-                prop.setVisible(false);
-            
-            }
+            System.exit(0); //WOOO EXIT POINT;
         }
+    }
+    private class Menu implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            save.dispose();
+            main.revalidate();
+            main.setVisible(true);
+            prop.setVisible(false);
+            //maybe create an erase method?
+        }  
     }
 }
 
