@@ -17,16 +17,17 @@ public class Make {
     Container buttonPane;
     Checkbox timer, repeat, tryA;
     Checkbox Ctwo, Cthree, Cfour, Cfive;
-    Label Re = new Label(), Ti = new Label(), Nq = new Label(), Pc = new Label();
+    Label Re = new Label(), Ti = new Label(), Nq = new Label(), Pc = new Label(),
+            Ri = new Label(), On = new Label(), Tw = new Label(), Th = new Label(), 
+                Fo = new Label(), Qu = new Label();
     SpringLayout layout = new SpringLayout();
-    Label[] Empty = new Label[100];
     CheckboxGroup PerQuest = new CheckboxGroup();
     TextField QuestNum, PercentNum, a,b,c,d,e;
     TextArea Question;
     Choice s;
-    int xc,yc;
+    int xc,yc,Qnumb;
     public Make() {
-        prop.addMouseListener(new PanelListener());
+        if(debug == true) prop.addMouseListener(new PanelListener());
     }
         private class PanelListener extends MouseAdapter {
         @Override
@@ -67,45 +68,55 @@ public class Make {
         Layout(nextQ, x+185, y+115);
         
         
-        int xx = -10;
+        int xx = 40;
         int yy = 60;
         Layout(a, xx+80, yy+225);
-        Layout(b, xx+80, yy+260);
-        Layout(c, xx+80, yy+285);
-        Layout(d, xx+80, yy+310);
-        Layout(e, xx+80, yy+335);
-        Layout(Question, 70, 180);
+        Layout(b, xx+90, yy+260);
+        Layout(c, xx+90, yy+285);
+        Layout(d, xx+90, yy+310);
+        Layout(e, xx+90, yy+335);
+        Layout(Question, 35, 180);
+        Layout(Ri, xx-30, yy+225);
+        Layout(On, xx-30, yy+260);
+        Layout(Tw, xx-30, yy+285);
+        Layout(Th, xx-35, yy+310);
+        Layout(Fo, xx-30, yy+335);
+        Layout(submit, x+160, 445);
     }
     public void ordered() {
-        for(Label i : Empty) {i = new Label();}
         timer = new Checkbox("Timed?");buttonPane.add(timer);buttonPane.add(Ti);
         repeat = new Checkbox("Repeat Exam?"); buttonPane.add(repeat);buttonPane.add(Re);
         Ctwo = new Checkbox("two",false,PerQuest);buttonPane.add(Ctwo);
         Cthree = new Checkbox("three",false,PerQuest);buttonPane.add(Cthree);
         Cfour = new Checkbox("four",false,PerQuest);buttonPane.add(Cfour);
-        Cfive = new Checkbox("five",false,PerQuest);buttonPane.add(Cfive);
+        Cfive = new Checkbox("five",true,PerQuest);buttonPane.add(Cfive);
         QuestNum = new TextField("", 2);buttonPane.add(Nq);
         buttonPane.add(QuestNum);
         PercentNum = new TextField("",1); buttonPane.add(Pc);
         buttonPane.add(PercentNum);
         nextQ = new Button("Next");buttonPane.add(nextQ);
+        submit = new Button(""); buttonPane.add(submit);
         a = new TextField("", 45); buttonPane.add(a);
         b = new TextField("", 45); buttonPane.add(b);
         c = new TextField("", 45); buttonPane.add(c);
         d = new TextField("", 45); buttonPane.add(d);
         e = new TextField("", 45); buttonPane.add(e);
-        Question = new TextArea(5, 46);
-        //Question.setSize(new Dimension(23,23)); 
-        System.out.print("This is ");
-        Question.setRows(5);buttonPane.add(Question);
-        System.out.println("Sparta.");
+        Question = new TextArea(5, 55);buttonPane.add(Question);
+        Ri.setText("The Right Answer:");buttonPane.add(Ri);
+        On.setText("Wrong Answer One:");buttonPane.add(On);
+        Tw.setText("Wrong Answer Two:");buttonPane.add(Tw);
+        Th.setText("Wrong Answer Three:");buttonPane.add(Th);
+        Fo.setText("Wrong Answer Four:");buttonPane.add(Fo);
+        Qu.setText("Input Question Here:");
         Layouts();
         setState(true);
     }
     
     public void Buttons() {
         nextQ.setPreferredSize(new Dimension(100,40));
-        nextQ.addActionListener(new prop()); 
+        nextQ.addActionListener(new Propr()); 
+        submit.setPreferredSize(new Dimension(150,40));
+        submit.addActionListener(new Sub());
     }
     public void Checkbox() {
         theIL(timer, Ti, "How long (In Minutes) should the quiz last", "Time");
@@ -257,12 +268,14 @@ public class Make {
             }
     });
     }
-    private class prop implements ActionListener {
+    private class Propr implements ActionListener {
         //When Next is presed, go to the next screen and place all the properties
         //in the properties string.
         @Override
-        public void actionPerformed(ActionEvent ae) {//turn this into an arrayList
-            if(debug == true) System.out.println(ae.paramString());
+        public void actionPerformed(ActionEvent ae) {
+            boolean goahead =(!QuestNum.getText().equals("")) 
+                    && (!PercentNum.getText().equals(""));
+            if(goahead) {
             if(nextQ.getLabel().equalsIgnoreCase("next")) {
                 
             
@@ -305,14 +318,33 @@ public class Make {
             4 refers to how many options will be in each question of the quiz
             */
             } else if(nextQ.getLabel().equalsIgnoreCase("back")) {
-                setState(true);
-                prop.setSize(500, 200);
-                nextQ.setLabel("Next");
-                //erase info?
+                int choice = JOptionPane.showConfirmDialog(null, 
+                        "Editing the previous settings will result in the current set of questions" +
+                                " and answers being lost. \nAre you sure you want to proceed?", 
+                        "Are you sure?", JOptionPane.YES_NO_OPTION); //yes == 0, no == 1
+                if(choice == 0) {
+                    setState(true);
+                    prop.setSize(500, 200);
+                    nextQ.setLabel("Next");
+                    //erase info
+                    a.setText("");b.setText("");d.setText("");c.setText("");
+                    e.setText(""); Question.setText("");
+                    QuestA.clear();
+                    WAnswer.clear();
+                    RAnswer.clear();
+                    timer.setState(false);
+                    Ti.setText("");Re.setText("");
+                    repeat.setState(false);
+                    QuestNum.setText("");
+                    PercentNum.setText("");
+                    submit.setLabel("");
+                } else {
+                    //do nothing.
+                }
+            }
             }
         }
     }
-    
     public void setState(boolean state) {
             timer.setEnabled(state);
             repeat.setEnabled(state);
@@ -339,5 +371,84 @@ public class Make {
         setState(false);
         nextQ.setLabel("Back");
         prop.setSize(500,550);
+        
+        if(Ctwo.getState()) {
+            c.setEnabled(false);
+            d.setEnabled(false);
+            e.setEnabled(false);
+            WAnswer.add(new ArrayList<String>());
+        }if(Cthree.getState()) {
+            d.setEnabled(false);
+            e.setEnabled(false);
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+        }if(Cfour.getState()) {
+            e.setEnabled(false);
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+        }if(Cfive.getState()) {
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+            WAnswer.add(new ArrayList<String>());
+        }
+        
+        //WAnswer.get(0).add(4, "This is adding a string at row 0, column 4");
+        Qnumb = Integer.parseInt(QuestNum.getText()) -1;
+        if(Qnumb != 1 && Qnumb != 0){ 
+            submit.setLabel(Qnumb + " Questions Left");  
+        } else if(Qnumb == 0) {
+            submit.setLabel("Move on to Next Screen");
+        }
+    }
+    private class Sub implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            boolean ready = false;
+            boolean test = Question.getText().equals("") || a.getText().equals("") ||
+                     b.getText().equals("")|| (c.getText().equals("") && c.isEnabled())|| 
+                    (d.getText().equals("") && d.isEnabled()) || 
+                    (e.getText().equals("") && e.isEnabled());
+            //replace at one point with Listeners for each feild
+            if(!test) { //if the fields have stuff in them
+                if(Qnumb > 0) {
+                    Qnumb = Qnumb - 1; 
+                    submit.setLabel(Qnumb + " Questions Left");
+                    if(Qnumb == 0) {
+                        submit.setLabel("Move on to Next Screen");
+                    }
+                } else if(Qnumb == 0) {
+                    ready = true;
+                }
+                QuestA.add(Question.getText());
+                RAnswer.add(a.getText());
+                WAnswer.get(0).add(b.getText());
+                if(Cthree.getState()) {
+                    WAnswer.get(1).add(c.getText());
+                }
+                if(Cfour.getState()) {
+                    WAnswer.get(1).add(c.getText());
+                    WAnswer.get(2).add(d.getText());
+                }
+                if(Cfive.getState()) {
+                    WAnswer.get(1).add(c.getText());
+                    WAnswer.get(2).add(d.getText());
+                    WAnswer.get(3).add(e.getText()); 
+                }
+                
+                Question.setText("");
+                a.setText("");
+                b.setText("");
+                c.setText("");
+                d.setText("");
+                e.setText("");
+                if(ready) {
+                    if(debug == true)  System.out.println("QUESTIONS:" + QuestA + 
+                        "\n" + "ANSWERS:" + RAnswer + "\n" + "WRONG:" + WAnswer);                          
+                //move on to the Final Make screen.
+                }
+            }
+        }
     }
 }

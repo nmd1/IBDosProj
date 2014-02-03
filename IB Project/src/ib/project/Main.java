@@ -21,14 +21,16 @@ public class Main extends JPanel {
     public static Choice equations;
     //static String properties;
     static ArrayList<String> properties = new ArrayList<String>();
+    static ArrayList<String> QuestA = new ArrayList<String>();
+    static ArrayList<String> RAnswer = new ArrayList<String>();
+    static ArrayList<ArrayList<String>> WAnswer = new ArrayList<ArrayList<String>>();
     static boolean debug = true;
-    int xd, yd;
     public static void main(String[] args) {
         //Main Properties//
         main = new JFrame();
         main.setTitle("Main Menu");
         newPanel(main);
-        main.setSize(500,500);
+        main.setSize(500,200);
         main.setVisible(true);
         main.setResizable(true);
         //main.add() //We'll see if we need this later
