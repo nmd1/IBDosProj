@@ -27,7 +27,7 @@ public class Take {
     Checkbox a, b, c, d, e;
     CheckboxGroup Ans = new CheckboxGroup();
     boolean screen = true;
-    int xc, yc;
+    int xc, yc, Qnumber;
     
     public Take() {
         if(debug == true) start.addMouseListener(new PanelListener());
@@ -89,24 +89,26 @@ public class Take {
         d.setVisible(false);
         e.setVisible(false);
         
+        s.setPreferredSize(new Dimension(300,40));
         takePane.add(s);
         
         layout();
     }
     public void layout() {
-        int x = 0, y = 0;
-        Layout(drop,100,100);
-        Layout(getQuiz,100,50);
-        Layout(propB, 230,50);
-        Layout(s, 200, 100);
-        Layout(next, 140, 240);
+        int x = 50, y = 80;
+        Layout(drop,170,70);
+        Layout(getQuiz,100,30);
+        Layout(propB, 230,30);
+        Layout(s, 120, 150);
+        Layout(next, 130, 180);
         
         
-        Layout(a, x+150, y+40);
-        Layout(b, x+200, y+40);
-        Layout(c, x+250, y+40);
-        Layout(d, x+300, y+40);
-        Layout(e, x+300, y+40);
+        Layout(a, x, y);
+        Layout(b, x, y+30);
+        Layout(c, x, y+60);
+        Layout(d, x, y+90);
+        Layout(e, x, y+120);
+        Layout(Quest, 50, 20);
     }
     private class File implements ActionListener{
         @Override
@@ -199,9 +201,20 @@ public class Take {
         public void actionPerformed(ActionEvent ae) {
             if(screen){
                 screen = false;
+                start.setSize(500,500);
                 takePane.removeAll();
                 takePane.add(next);
+                        takePane.add(a);
+                        takePane.add(b);
+                        takePane.add(c);
+                        takePane.add(d);
+                        takePane.add(e);
                 next.setLabel("Questions Left");
+                Font f = new Font("Verdana", Font.BOLD, 24);
+                Quest.setFont(f);
+                Quest.setPreferredSize(new Dimension(300, 100));
+                layout();
+                Layout(next, 130, 400);
                 
                 a.setVisible(true);
                 b.setVisible(true);
@@ -209,7 +222,7 @@ public class Take {
                 d.setVisible(true);
                 e.setVisible(true);
                 
-                //working on this
+                
             }
         }
     }

@@ -50,7 +50,7 @@ public class Main extends JPanel {
         //take start properties//
         start = new JFrame();
         start.setTitle("Choose a Quiz");
-        start.setSize(500,500);
+        start.setSize(500,280);
         newPanel(start);
         
         // JObjects
