@@ -222,11 +222,28 @@ public class Take {
                 d.setVisible(true);
                 e.setVisible(true);
                 
+                a.setLabel("");
+                b.setLabel("");
+                c.setLabel("");
+                d.setLabel("");
+                e.setLabel("");
+                        
+                properties.get(0);
+                Quest.setText(QuestA.get(0));
+                RAnswer.get(0);
                 
             }
         }
     }
-     
+    public String[] Rand(int i) {
+        String a[] = new String[i];
+        Random r = new Random(i);
+        int rand = r.nextInt(i);
+        for(int j = 0; j < a.length - 1; j++) {
+            
+        }
+        return a;
+    }
     public void load() {
         
     }
