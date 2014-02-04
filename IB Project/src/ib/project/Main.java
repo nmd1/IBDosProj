@@ -45,13 +45,12 @@ public class Main extends JPanel {
         save = new JFrame();
         save.setTitle("What would you like to do with your Quiz?");
         save.setSize(400,250);
-        newPanel(save); /*to delete*/save.setVisible(true);
-        Save s = new Save(); s.Saving();
-       
+        newPanel(save);
+        
         //take start properties//
         start = new JFrame();
         start.setTitle("Choose a Quiz");
-        start.setSize(300,300);
+        start.setSize(500,500);
         newPanel(start);
         
         // JObjects
@@ -63,6 +62,7 @@ public class Main extends JPanel {
         makeB.addActionListener(new making());
         takeB = new Button("Take A Quiz");
         takeB.setPreferredSize(a);
+        takeB.addActionListener(new taking());
         helpB = new Button("Help");
         helpB.setPreferredSize(new Dimension(70,40));
         helpB.addActionListener(new info());
@@ -97,13 +97,13 @@ public class Main extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             Make p = new Make();
             p.QuizCreation();
-            prop.repaint();
         }
     }
     public static class taking implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            main.setVisible(false);
+            Take t = new Take();
+            t.Taking();
         }
     }
     

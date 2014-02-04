@@ -25,10 +25,10 @@ public class Save {
         prop.setVisible(false);
         main.setVisible(false);
         save.setVisible(true);
+        start.setVisible(false);
         saverPane = save.getContentPane();
         saverPane.setLayout(layout);
         buttons();
-        order();
     }
     public void order() {
         Layout(SavetoText, 40, 20);
@@ -52,6 +52,7 @@ public class Save {
         TakeQuiz.addActionListener(new TQ());
         leave.addActionListener(new Exit());
         mainB.addActionListener(new Menu());
+        order();
     }
     public void Layout(Component c, int x, int y) {
         layout.putConstraint(SpringLayout.WEST, c,x, SpringLayout.WEST, saverPane);
@@ -82,6 +83,7 @@ public class Save {
                 output.write("" + WAnswer);
                 output.close();
                 
+                if(a.equals("Save here")) {
                 saverPane.remove(SaveandTake);
                 saverPane.remove(SavetoText);
                 saverPane.remove(TakeQuiz);
@@ -95,6 +97,7 @@ public class Save {
                 saverPane.add(mainB);
                 Layout(leave, 270, 60);
                 Layout(mainB, 80, 60);
+                }
                 
             } catch (IOException e) {
                 System.out.println("problem accessing file"+file.getAbsolutePath());
@@ -117,13 +120,15 @@ public class Save {
         @Override
         public void actionPerformed(ActionEvent ae) {
             file("Save and Take Quiz");
-            //now, go to take
+            Take t = new Take();
+            t.Taking();
         }
     }
     private class TQ implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            //go directly to take screen
+            Take t = new Take();
+            t.Taking();
         }
     }
     private class Exit implements ActionListener {
@@ -135,10 +140,11 @@ public class Save {
     private class Menu implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
-            save.dispose();
-            main.revalidate();
+            save.setVisible(false);
+            buttons();
             main.setVisible(true);
             prop.setVisible(false);
+            start.setVisible(false);
             //maybe create an erase method?
         }  
     }
