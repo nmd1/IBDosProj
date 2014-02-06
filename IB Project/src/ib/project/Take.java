@@ -2,20 +2,15 @@ package ib.project;
 
 import static ib.project.Main.*;
 import java.awt.Button;
-import java.util.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 import javax.swing.*;
 import java.io.*;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.*;
-import static java.util.Collections.list;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Take {
     //This is it.. the last file. Probably the biggest.
