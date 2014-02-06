@@ -281,28 +281,28 @@ public class Make {
             if (debug = true) System.out.println("Timer is " + timer.getState());
             
             if(timer.getState()) {
-               properties.add("Timer = true");
-               properties.add("TimerValue = " + Ti.getText());
+               properties.add("Ttrue");
+               properties.add("TV" + Ti.getText());
             } else {
-                properties.add("Timer = false");
+                properties.add("Tfalse");
             }
             
             if (debug = true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
             if(repeat.getState()) {
-                properties.add( "Repeat = true");
-                properties.add("RepeatValue = " + Re.getText());
+                properties.add("Rtrue");
+                properties.add("RV" + Re.getText());
             } else {
-                properties.add("Repeat = false");
+                properties.add("Rfalse");
             }
             
-            if(PerQuest.getSelectedCheckbox() == Ctwo) properties.add("PerQuest = 2");
-            if(PerQuest.getSelectedCheckbox() == Cthree) properties.add("PerQuest = 3");
-            if(PerQuest.getSelectedCheckbox() == Cfour) properties.add("PerQuest = 4");
-            if(PerQuest.getSelectedCheckbox() == Cfive) properties.add("PerQuest = 5");
+            if(PerQuest.getSelectedCheckbox() == Ctwo) properties.add("PQ2");
+            if(PerQuest.getSelectedCheckbox() == Cthree) properties.add("PQ3");
+            if(PerQuest.getSelectedCheckbox() == Cfour) properties.add("PQ4");
+            if(PerQuest.getSelectedCheckbox() == Cfive) properties.add("PQ5");
             
             properties.add("QuestNum = " + QuestNum.getText());
             if(!PercentNum.getText().equalsIgnoreCase("") || !PercentNum.getText().equalsIgnoreCase("0"))
-                properties.add("PercentNum = " + PercentNum.getText());
+                properties.add("%" + PercentNum.getText() + "%");
             else
                 properties.add("PercentNum = 100");
             

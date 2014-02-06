@@ -10,7 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 import java.io.*;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.*;
+import static java.util.Collections.list;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,8 +29,10 @@ public class Take {
     Label s = new Label(), Quest = new Label();
     Checkbox a, b, c, d, e;
     CheckboxGroup Ans = new CheckboxGroup();
-    boolean screen = true;
+    boolean screen;
     int xc, yc, Qnumber;
+    int timerTime, repeatTime, perQuest, percent;
+    boolean timerV = false, repeatV = false;
     
     public Take() {
         if(debug == true) start.addMouseListener(new PanelListener());
@@ -49,6 +54,7 @@ public class Take {
         takePane = start.getContentPane();
         takePane.setLayout(layout);
         setup();
+        screen = true;
         
     }
     public void Layout(Component c, int x, int y) {
@@ -161,9 +167,9 @@ public class Take {
            
            everything = everything.replaceAll("QUIZ DATA", "");
            everything = everything.trim();
-           String[] ArrayString = everything.split("\n");
+           String[] ArrayString2, ArrayString = everything.split("\n");
            ArrayString[0] = ArrayString[0].replaceFirst("\\[ ", "{");
-           int l = ArrayString.length - 1;
+           int l = ArrayString.length - 1; //the WAnswers
            ArrayString[l] = ArrayString[l].replaceFirst("\\[", "{");
            ArrayString[l] = ArrayString[l].replaceAll("],", "] |");
            
@@ -172,27 +178,161 @@ public class Take {
            b.replace(ArrayString[l].lastIndexOf("]"), ArrayString[l].lastIndexOf("]") + 1, "}" );
            ArrayString[l] = b.toString();
            //replace last end
-           ArrayString[l] = ArrayString[l].replace("\\{,", "");
-           ArrayString[l] = ArrayString[l].replace("},", "");
+           ArrayString[l] = betterReplace(ArrayString[l], 1);
            
-           String[] wrongAnswers = ArrayString[l].split("\\|");
+           String[] wrongAnswers = ArrayString[l].split("\\| ");
            
            System.out.println( ArrayString[l] );
            int i = 0;
            for(String a: ArrayString){
                if(i == l) break;
-                    ArrayString[i] = a.replace("\\[h", ""); //FIX THIS NOW
-                    ArrayString[i] = a.replaceAll("]", "");
+                    ArrayString[i] = betterReplace(a, 0); //YESYEYSYEYSYYYEYYSYEYSYEYES
+                    //ArrayString[i] = a.replaceAll("]", "");
                     System.out.println(ArrayString[i]);
                i++;
            }
+           if (debug == true)
            for(String a: wrongAnswers) {
-               System.out.println(a);//here's an idea, do method changing
+               System.out.println(a);//here's an idea, do method chaining
            }
+           //Properties
+           System.out.println(ArrayString[0]);
+           String scan = betterReplace(ArrayString[0], 0);
+           timerV = scan.contains("Ttrue");
+           if(timerV) {
+               String x = scan.substring(scan.indexOf("e: ") + 1);
+                x = x.substring(0, x.indexOf(","));
+                x = betterReplace(x , 2);
+                timerTime = Integer.parseInt(x);
+               System.out.println(x);
+           }
+           repeatV = scan.contains("Rtrue");
+           if(repeatV){
+               String x = scan.substring(scan.indexOf("t: ") + 1);
+               x = x.substring(0, x.indexOf(","));
+               x = betterReplace(x , 2);
+               repeatTime = Integer.parseInt(x);
+               System.out.println(x);
+           }
+           if(scan.contains("PQ5")) perQuest = 5;
+           if(scan.contains("PQ4")) perQuest = 4;
+           if(scan.contains("PQ3")) perQuest = 3;
+           if(scan.contains("PQ2")) perQuest = 2;
+               
+               String x = scan.substring(scan.indexOf("= ") + 1);
+               x = x.substring(0, x.indexOf(","));
+               x = betterReplace(x , 2);
+               repeatTime = Integer.parseInt(x);
+               Qnumber = Integer.parseInt(x);
+               System.out.println(x);
+           
+               
+              // x = scan.replaceAll(".*%", "");
+               x = scan.substring(scan.indexOf("%") + 1);
+               x = x.substring(0, x.indexOf("%"));
+               x = betterReplace(x , 2);
+               percent = Integer.parseInt(x);
+               System.out.println(x);
+           //
+           
+           ArrayString2 = ArrayString[l].split("\\|"); //splits up wrong answers
+           //spitting this up into that mutidimentional list
+           ArrayList<String> tempList = new ArrayList<String>();
+           i = 0;
+           WAnswer.clear();
+           String[] tempA;
+           for(String a: ArrayString2) {
+                tempA = ArrayString2[i].split(",");
+                Collections.addAll(tempList, tempA);
+                WAnswer.add(i, tempList);
+                i++; //fix ize problem
+           }
+           /*try {
+               while(true) {
+                WAnswer.remove(perQuest);
+               }
+           } catch(IndexOutOfBoundsException e){
+               System.out.println(WAnswer);
+           }*/
+           
+           //Done. now for the other two.
+           QuestA.clear();
+           tempA = ArrayString[1].split(",");
+           Collections.addAll(QuestA, tempA);
+           RAnswer.clear();
+           tempA = ArrayString[2].split(",");
+           Collections.addAll(RAnswer, tempA); 
+           //done.
+           
+           //now for the properties.
+           System.out.println("WAnswer:" + WAnswer);
+           System.out.println("RAnswer:" + RAnswer);
+           System.out.println("Questions:" + QuestA);
+           //perQuest
+           
+           
+           
            s.setText("Loading Quiz was scucess: Quiz Ready"); //if not sucess, prevent next from appearing
            
            next.setEnabled(true);
         }  
+    }
+    
+    public String betterReplace(String str, int i) {
+        String token = str;
+        StringBuffer s = new StringBuffer(token.length());
+
+        CharacterIterator it = new StringCharacterIterator(token);
+        for (char ch = it.first(); ch != CharacterIterator.DONE; ch = it.next()) {
+            if(i == 0) {
+            switch (ch) {
+                
+                case '[':
+                    s.append("");
+                    break;
+                case ']':
+                    s.append("");
+                    break;
+                case '\n':
+                    s.append("");
+                    break;
+                default:
+                    s.append(ch);
+                    break;
+                }
+            }
+            if(i == 1) {
+                switch (ch) {
+                
+                case '{':
+                    s.append("");
+                    break;
+                case '}':
+                    s.append("");
+                    break;
+                default:
+                    s.append(ch);
+                    break;
+                }
+            }
+            if(i == 2) {
+                switch (ch) {
+                
+                case ':':
+                    s.append("");
+                    break;
+                case ' ':
+                    s.append("");
+                    break;
+                default:
+                    s.append(ch);
+                    break;
+                }
+            }
+        }
+
+        token = s.toString();
+        return token;
     }
     
     
@@ -216,26 +356,116 @@ public class Take {
                 layout();
                 Layout(next, 130, 400);
                 
+                boolean twoA = perQuest == 2,
+                        threeA = perQuest == 3,
+                        fourA = perQuest == 4,
+                        fiveA = perQuest == 5;
+                
+                if(twoA) {
+                a.setVisible(true);
+                b.setVisible(true);
+                c.setVisible(false);
+                d.setVisible(false);
+                e.setVisible(false);
+                }
+                if(threeA) {
+                a.setVisible(true);
+                b.setVisible(true);
+                c.setVisible(true);
+                d.setVisible(false);
+                e.setVisible(false);
+                }
+                if(fourA) {
+                a.setVisible(true);
+                b.setVisible(true);
+                c.setVisible(true);
+                d.setVisible(true);
+                e.setVisible(false);
+                }
+                if(fiveA) {
                 a.setVisible(true);
                 b.setVisible(true);
                 c.setVisible(true);
                 d.setVisible(true);
                 e.setVisible(true);
+                }
                 
-                a.setLabel("");
-                b.setLabel("");
-                c.setLabel("");
-                d.setLabel("");
-                e.setLabel("");
+                
+                
                         
-                properties.get(0);
-                Quest.setText(QuestA.get(0));
-                RAnswer.get(0);
+                //properties.get(0);
                 
+                
+                
+                long seed = System.nanoTime();
+                Collections.shuffle(QuestA, new Random(seed));
+                Collections.shuffle(RAnswer, new Random(seed));
+                Collections.shuffle(WAnswer, new Random(seed));
+                
+                /*store a set of a's a set of b's a set of c's....
+                store a for #1, a for #2, a for #3
+                so basically every time you move on to a next question,
+                randomize the array lists in the array.
+                then go to that coresponding question number in that array list.
+                BAM.
+   A's a array  [][][][][]
+             B  [][][][][]
+             C  [][][][][]
+             D  [][][][][]
+                1 2 3 4 5
+                */
+                
+                
+                Quest.setText(QuestA.get(0));
+                Random ra = new Random(5);
+                int r = ra.nextInt(4);
+                
+                Qnumber = Qnumber - 3;
+                //the following code will look simplier without if statements
+                twoA = twoA || WAnswer.get(1) != null;
+                threeA = threeA || twoA || WAnswer.get(2) != null;
+                fourA = fourA || threeA || WAnswer.get(3) != null;
+                if(r == 0) {
+                a.setLabel(RAnswer.get(Qnumber));
+                b.setLabel(WAnswer.get(0).get(Qnumber));
+                if(!twoA) c.setLabel(WAnswer.get(1).get(Qnumber));
+                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
+                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
+                }
+                if(r == 1) {
+                a.setLabel(WAnswer.get(0).get(Qnumber));
+                b.setLabel(RAnswer.get(Qnumber));
+                if(!twoA) c.setLabel(WAnswer.get(1).get(Qnumber));
+                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
+                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
+                }
+                if(r == 2) {
+                a.setLabel(WAnswer.get(0).get(Qnumber));
+                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
+                c.setLabel(RAnswer.get(Qnumber));
+                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
+                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
+                }
+                if(r == 3) {
+                a.setLabel(WAnswer.get(0).get(Qnumber));
+                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
+                if(!threeA) c.setLabel(WAnswer.get(2).get(Qnumber));
+                d.setLabel(RAnswer.get(Qnumber));
+                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
+                }
+                if(r == 4) {
+                a.setLabel(WAnswer.get(0).get(Qnumber));
+                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
+                if(!threeA) c.setLabel(WAnswer.get(2).get(Qnumber));
+                if(!fourA) d.setLabel(WAnswer.get(3).get(Qnumber));
+                e.setLabel(RAnswer.get(Qnumber));
+                }
+                
+                //WORK ON THIS
             }
         }
     }
-    public String[] Rand(int i) {
+    /*public String[] Rand(int i) {
         String a[] = new String[i];
         Random r = new Random(i);
         int rand = r.nextInt(i);
@@ -243,7 +473,7 @@ public class Take {
             
         }
         return a;
-    }
+    }*/
     public void load() {
         
     }
