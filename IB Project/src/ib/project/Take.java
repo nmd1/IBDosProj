@@ -31,7 +31,7 @@ public class Take {
     CheckboxGroup Ans = new CheckboxGroup();
     boolean screen;
     int xc, yc, Qnumber;
-    int timerTime, repeatTime, perQuest, percent;
+    int timerTime, repeatTime, perQuest, percent, left, right, count;
     boolean timerV = false, repeatV = false;
     
     public Take() {
@@ -94,6 +94,11 @@ public class Take {
         c.setVisible(false);
         d.setVisible(false);
         e.setVisible(false);
+        a.setPreferredSize(new Dimension(300,40));
+        b.setPreferredSize(new Dimension(300,40));
+        c.setPreferredSize(new Dimension(300,40));
+        d.setPreferredSize(new Dimension(300,40));
+        e.setPreferredSize(new Dimension(300,40));
         
         s.setPreferredSize(new Dimension(300,40));
         takePane.add(s);
@@ -114,7 +119,7 @@ public class Take {
         Layout(c, x, y+60);
         Layout(d, x, y+90);
         Layout(e, x, y+120);
-        Layout(Quest, 50, 20);
+        Layout(Quest, 50, 10);
     }
     private class File implements ActionListener{
         @Override
@@ -339,7 +344,10 @@ public class Take {
     private class Move implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
+            //load();
+            System.out.println("Went into the button");
             if(screen){
+                System.out.println("Went into the if");
                 screen = false;
                 start.setSize(500,500);
                 takePane.removeAll();
@@ -349,8 +357,8 @@ public class Take {
                         takePane.add(c);
                         takePane.add(d);
                         takePane.add(e);
-                next.setLabel("Questions Left");
-                Font f = new Font("Verdana", Font.BOLD, 24);
+                next.setLabel(Qnumber + " Questions Left");
+                Font f = new Font("Verdana", Font.BOLD, 14);
                 Quest.setFont(f);
                 Quest.setPreferredSize(new Dimension(300, 100));
                 layout();
@@ -402,7 +410,7 @@ public class Take {
                 Collections.shuffle(RAnswer, new Random(seed));
                 Collections.shuffle(WAnswer, new Random(seed));
                 
-                /*store a set of a's a set of b's a set of c's....
+                /* store a set of a's a set of b's a set of c's....
                 store a for #1, a for #2, a for #3
                 so basically every time you move on to a next question,
                 randomize the array lists in the array.
@@ -413,18 +421,22 @@ public class Take {
              C  [][][][][]
              D  [][][][][]
                 1 2 3 4 5
-                */
+               ////////////////////////////////////// */
                 
                 
                 Quest.setText(QuestA.get(0));
+                takePane.add(Quest);
+                Quest.setVisible(true);
                 Random ra = new Random(5);
                 int r = ra.nextInt(4);
-                
-                Qnumber = Qnumber - 3;
+                left = Qnumber;
+                Qnumber = Qnumber - 1;
                 //the following code will look simplier without if statements
                 twoA = twoA || WAnswer.get(1) != null;
                 threeA = threeA || twoA || WAnswer.get(2) != null;
                 fourA = fourA || threeA || WAnswer.get(3) != null;
+                
+                try {
                 if(r == 0) {
                 a.setLabel(RAnswer.get(Qnumber));
                 b.setLabel(WAnswer.get(0).get(Qnumber));
@@ -441,10 +453,10 @@ public class Take {
                 }
                 if(r == 2) {
                 a.setLabel(WAnswer.get(0).get(Qnumber));
-                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
+                if(twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
                 c.setLabel(RAnswer.get(Qnumber));
-                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
-                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
+                if(threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
+                if(fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
                 }
                 if(r == 3) {
                 a.setLabel(WAnswer.get(0).get(Qnumber));
@@ -459,10 +471,41 @@ public class Take {
                 if(!threeA) c.setLabel(WAnswer.get(2).get(Qnumber));
                 if(!fourA) d.setLabel(WAnswer.get(3).get(Qnumber));
                 e.setLabel(RAnswer.get(Qnumber));
-                }
                 
+                
+                }
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Index");
+                }
                 //WORK ON THIS
+                screen = false;
+            } else {
+                System.out.println("Went into the else" + Qnumber);
+                Qnumber = Qnumber - 1;
+                
+            /*if(Ans.getSelectedCheckbox().getLabel() == RAnswer.get(Qnumber)) {
+                right++;
+                count++;
+            } else {
+                count++;
+            }*/
+            next.setLabel(Qnumber + " Questions Left");
+            try{
+                a.setLabel(WAnswer.get(0).get(Qnumber));
+                c.setLabel(RAnswer.get(Qnumber));
+                b.setLabel(WAnswer.get(1).get(Qnumber));
+                d.setLabel(WAnswer.get(2).get(Qnumber));
+                //e.setLabel(WAnswer.get(3).get(Qnumber));
+            } catch (IndexOutOfBoundsException e) {
+                
             }
+               screen = false;
+               
+               if(Qnumber == 0) {
+                   maining();
+               }
+           }
+           
         }
     }
     /*public String[] Rand(int i) {
@@ -473,9 +516,12 @@ public class Take {
             
         }
         return a;
-    }*/
+        Main asdf = new Main();
+   // asdf.maining();
+    
+    } */
     public void load() {
-        
+        maining();
     }
     public void qSetup() {
         

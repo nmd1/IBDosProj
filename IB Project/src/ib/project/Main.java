@@ -16,6 +16,7 @@ public class Main extends JPanel {
     static Checkbox check;
     static Component d;
     public static Choice equations;
+    public static Label bigLabel = new Label();
     //static String properties;
     static ArrayList<String> properties = new ArrayList<String>();
     static ArrayList<String> QuestA = new ArrayList<String>();
@@ -113,6 +114,22 @@ public class Main extends JPanel {
             j.setVisible(true);
         } else {
             j.setVisible(false);
+        }
+    }
+    public static void maining() {
+        Take t = new Take();
+//        int percentage = t.right/t.count;
+        bigLabel.setText("Congrats, You're done!");
+        makeB.setLabel("Exit");
+        takeB.setVisible(false);
+        makeB.addActionListener(new exiting());
+        helpB.setVisible(false);
+    }
+    
+     public static class exiting implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            System.exit(0);
         }
     }
 }
