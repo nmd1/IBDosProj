@@ -26,7 +26,7 @@ public class Take {
     CheckboxGroup Ans = new CheckboxGroup();
     boolean screen;
     int xc, yc, Qnumber;
-    int timerTime, repeatTime, perQuest, percent, left, right, count;
+    int timerTime, repeatTime, perQuest, percent, left, right, count, subt;
     boolean timerV = false, repeatV = false;
     
     public Take() {
@@ -50,6 +50,7 @@ public class Take {
         takePane.setLayout(layout);
         setup();
         screen = true;
+        
         
     }
     public void Layout(Component c, int x, int y) {
@@ -273,7 +274,7 @@ public class Take {
            
            
            s.setText("Loading Quiz was scucess: Quiz Ready"); //if not sucess, prevent next from appearing
-           
+           subt = 0;
            next.setEnabled(true);
         }  
     }
@@ -334,32 +335,33 @@ public class Take {
         token = s.toString();
         return token;
     }
-    
-    
-    private class Move implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            //load();
-            System.out.println("Went into the button");
-            if(screen){
-                System.out.println("Went into the if");
-                screen = false;
-                start.setSize(500,500);
-                takePane.removeAll();
-                takePane.add(next);
-                        takePane.add(a);
-                        takePane.add(b);
-                        takePane.add(c);
-                        takePane.add(d);
-                        takePane.add(e);
-                next.setLabel(Qnumber + " Questions Left");
-                Font f = new Font("Verdana", Font.BOLD, 14);
-                Quest.setFont(f);
-                Quest.setPreferredSize(new Dimension(300, 100));
-                layout();
-                Layout(next, 130, 400);
+    public void quizSetup() {
+        screen = false;
+        System.out.println("went into quiz setup");
+        
+        start.setSize(500,500);
+        takePane.removeAll();
+        takePane.add(next);
+            takePane.add(a);
+            takePane.add(b);
+            takePane.add(c);
+            takePane.add(d);
+            takePane.add(e);
+            a.setVisible(true);
+            b.setVisible(true);
+            c.setVisible(true);
+            d.setVisible(true);
+            e.setVisible(true);
+            Quest.setVisible(true);
+        //next.setLabel(Qnumber + " Questions Left");
+        Font f = new Font("Verdana", Font.BOLD, 14);
+        Quest.setFont(f);
+        Quest.setPreferredSize(new Dimension(300, 100));
+        layout();
+        Layout(next, 130, 400);
+        count = Qnumber;
                 
-                boolean twoA = perQuest == 2,
+                /*boolean twoA = perQuest == 2,
                         threeA = perQuest == 3,
                         fourA = perQuest == 4,
                         fiveA = perQuest == 5;
@@ -416,7 +418,8 @@ public class Take {
              C  [][][][][]
              D  [][][][][]
                 1 2 3 4 5
-               ////////////////////////////////////// */
+               ////////////////////////////////////// 
+ 
                 
                 
                 Quest.setText(QuestA.get(0));
@@ -473,34 +476,30 @@ public class Take {
                     System.out.println("Index");
                 }
                 //WORK ON THIS
-                screen = false;
+                */
+    }
+    
+    private class Move implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            //load();
+            //Qnumber is the number of Questions left
+            if(screen) quizSetup();
+            
+            int ntemp = Qnumber - count;
+            next.setLabel(count + " Questions Left");
+            
+            if(Qnumber <= 0) {
+                maining();//the final screen
             } else {
-                System.out.println("Went into the else" + Qnumber);
-                Qnumber = Qnumber - 1;
-                
-            /*if(Ans.getSelectedCheckbox().getLabel() == RAnswer.get(Qnumber)) {
-                right++;
-                count++;
-            } else {
-                count++;
-            }*/
-            next.setLabel(Qnumber + " Questions Left");
-            try{
-                a.setLabel(WAnswer.get(0).get(Qnumber));
-                c.setLabel(RAnswer.get(Qnumber));
-                b.setLabel(WAnswer.get(1).get(Qnumber));
-                d.setLabel(WAnswer.get(2).get(Qnumber));
-                //e.setLabel(WAnswer.get(3).get(Qnumber));
-            } catch (IndexOutOfBoundsException e) {
-                
+                a.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp));
+                c.setLabel(RAnswer.get((RAnswer.size() - 1) - ntemp));
+                b.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp));
+                d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp));
+                //e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp));
+                count = count - 1; //counts up
+                subt = subt + 1; //counts down
             }
-               screen = false;
-               
-               if(Qnumber == 0) {
-                   maining();
-               }
-           }
-           
         }
     }
     /*public String[] Rand(int i) {
