@@ -347,12 +347,21 @@ public class Take {
             takePane.add(c);
             takePane.add(d);
             takePane.add(e);
+            //randomize and check to see if c,d, or e exist
+            a.setLabel(WAnswer.get(1).get(0));
+            b.setLabel(WAnswer.get(2).get(0));
+            
+            
+            c.setLabel(RAnswer.get(0));
+            d.setLabel(WAnswer.get(3).get(0));
+            //e.setLabel(WAnswer.get(4).get(0));
             a.setVisible(true);
             b.setVisible(true);
             c.setVisible(true);
             d.setVisible(true);
             e.setVisible(true);
             Quest.setVisible(true);
+            Quest.setText(QuestA.get(0));
         //next.setLabel(Qnumber + " Questions Left");
         Font f = new Font("Verdana", Font.BOLD, 14);
         Quest.setFont(f);
@@ -496,7 +505,7 @@ public class Take {
                 c.setLabel(RAnswer.get((RAnswer.size() - 1) - ntemp));
                 b.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp));
                 d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp));
-                //e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp));
+                e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp));
                 count = count - 1; //counts up
                 subt = subt + 1; //counts down
             }
