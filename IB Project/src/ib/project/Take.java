@@ -348,12 +348,8 @@ public class Take {
             takePane.add(d);
             takePane.add(e);
             //randomize and check to see if c,d, or e exist
-            a.setLabel(WAnswer.get(1).get(0));
-            b.setLabel(WAnswer.get(2).get(0));
             
-            
-            c.setLabel(RAnswer.get(0));
-            d.setLabel(WAnswer.get(3).get(0));
+            //randomization method
             //e.setLabel(WAnswer.get(4).get(0));
             a.setVisible(true);
             b.setVisible(true);
@@ -361,6 +357,7 @@ public class Take {
             d.setVisible(true);
             e.setVisible(true);
             Quest.setVisible(true);
+            randomization(0);
             Quest.setText(QuestA.get(0));
         //next.setLabel(Qnumber + " Questions Left");
         Font f = new Font("Verdana", Font.BOLD, 14);
@@ -370,44 +367,7 @@ public class Take {
         Layout(next, 130, 400);
         count = Qnumber;
                 
-                /*boolean twoA = perQuest == 2,
-                        threeA = perQuest == 3,
-                        fourA = perQuest == 4,
-                        fiveA = perQuest == 5;
-                
-                if(twoA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(false);
-                d.setVisible(false);
-                e.setVisible(false);
-                }
-                if(threeA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(false);
-                e.setVisible(false);
-                }
-                if(fourA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(true);
-                e.setVisible(false);
-                }
-                if(fiveA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(true);
-                e.setVisible(true);
-                }
-                
-                
-                
-                        
-                //properties.get(0);
+                /*
                 
                 
                 
@@ -523,6 +483,26 @@ public class Take {
    // asdf.maining();
     
     } */
+    public void randomization(int i) {
+        //randomize questions
+        String[][] WrongA = new String[WAnswer.size()][];
+        int j = 0;
+        for (ArrayList<String> row : WAnswer) {
+            for(String done : row)//finish THIS CODE
+            //ArrayList<String> row = WAnswer.get(j);
+            WrongA[j] = row.toArray(new String[row.size()]);
+            //WrongA[j] = row.toArray(new String[row.size()]);
+            System.out.println(WrongA);
+            j++;
+        }
+        Quest.setText(QuestA.get(i));
+        a.setLabel(WAnswer.get(0).get(i));
+        b.setLabel(WAnswer.get(1).get(i));
+        c.setLabel(RAnswer.get(i));
+        d.setLabel(WAnswer.get(2).get(i));
+        e.setLabel(WAnswer.get(3).get(i));
+        System.out.println(WAnswer);
+    }
     public void load() {
         maining();
     }
