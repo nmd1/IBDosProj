@@ -30,7 +30,7 @@ public class Take {
     boolean timerV = false, repeatV = false;
     
     public Take() {
-        if(debug == true) start.addMouseListener(new PanelListener());
+        if(debug) start.addMouseListener(new PanelListener());
     }
     private class PanelListener extends MouseAdapter {
         @Override
@@ -192,12 +192,12 @@ public class Take {
                     System.out.println(ArrayString[i]);
                i++;
            }
-           if (debug == true)
+           if (debug)
            for(String a: wrongAnswers) {
                System.out.println(a);//here's an idea, do method chaining
            }
            //Properties
-           System.out.println(ArrayString[0]);
+            System.out.println(ArrayString[0]);
            String scan = betterReplace(ArrayString[0], 0);
            timerV = scan.contains("Ttrue");
            if(timerV) {
@@ -269,6 +269,24 @@ public class Take {
            System.out.println("WAnswer:" + WAnswer);
            System.out.println("RAnswer:" + RAnswer);
            System.out.println("Questions:" + QuestA);
+           
+           if(debug){
+           if(Qnumber != RAnswer.size()) {
+               System.out.println("MisMatch Error: Qnumb & RightSize");
+               System.out.println("Qnumb:" + Qnumber + " RightSize:" + RAnswer.size());
+           }
+           if(WAnswer.size() != RAnswer.size()) {
+               System.out.println("MisMatch Error: WrongSize & RightSize");
+               System.out.println("WrongSize:" +  WAnswer.size() + " RightSize:" + RAnswer.size());
+           }
+           if(WAnswer.size() != Qnumber) {
+              System.out.println("MisMatch Error: Qnumb & Wrongsize");
+              System.out.println("Qnumb:" + Qnumber + " WrongSize:" +  WAnswer.size());
+           }
+           }
+           System.out.println("Test:" + WAnswer.size());
+           
+           Qnumber = RAnswer.size();
            //perQuest
            
            
@@ -278,7 +296,6 @@ public class Take {
            next.setEnabled(true);
         }  
     }
-    
     public String betterReplace(String str, int i) {
         String token = str;
         StringBuffer s = new StringBuffer(token.length());
@@ -347,13 +364,10 @@ public class Take {
             takePane.add(c);
             takePane.add(d);
             takePane.add(e);
+            takePane.add(Quest);
             //randomize and check to see if c,d, or e exist
-            a.setLabel(WAnswer.get(1).get(0));
-            b.setLabel(WAnswer.get(2).get(0));
             
-            
-            c.setLabel(RAnswer.get(0));
-            d.setLabel(WAnswer.get(3).get(0));
+            qSetup(0);
             //e.setLabel(WAnswer.get(4).get(0));
             a.setVisible(true);
             b.setVisible(true);
@@ -361,7 +375,7 @@ public class Take {
             d.setVisible(true);
             e.setVisible(true);
             Quest.setVisible(true);
-            Quest.setText(QuestA.get(0));
+            
         //next.setLabel(Qnumber + " Questions Left");
         Font f = new Font("Verdana", Font.BOLD, 14);
         Quest.setFont(f);
@@ -369,46 +383,8 @@ public class Take {
         layout();
         Layout(next, 130, 400);
         count = Qnumber;
-                
-                /*boolean twoA = perQuest == 2,
-                        threeA = perQuest == 3,
-                        fourA = perQuest == 4,
-                        fiveA = perQuest == 5;
-                
-                if(twoA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(false);
-                d.setVisible(false);
-                e.setVisible(false);
-                }
-                if(threeA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(false);
-                e.setVisible(false);
-                }
-                if(fourA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(true);
-                e.setVisible(false);
-                }
-                if(fiveA) {
-                a.setVisible(true);
-                b.setVisible(true);
-                c.setVisible(true);
-                d.setVisible(true);
-                e.setVisible(true);
-                }
-                
-                
-                
-                        
                 //properties.get(0);
-                
+                /*
                 
                 
                 long seed = System.nanoTime();
@@ -427,64 +403,6 @@ public class Take {
              C  [][][][][]
              D  [][][][][]
                 1 2 3 4 5
-               ////////////////////////////////////// 
- 
-                
-                
-                Quest.setText(QuestA.get(0));
-                takePane.add(Quest);
-                Quest.setVisible(true);
-                Random ra = new Random(5);
-                int r = ra.nextInt(4);
-                left = Qnumber;
-                Qnumber = Qnumber - 1;
-                //the following code will look simplier without if statements
-                twoA = twoA || WAnswer.get(1) != null;
-                threeA = threeA || twoA || WAnswer.get(2) != null;
-                fourA = fourA || threeA || WAnswer.get(3) != null;
-                
-                try {
-                if(r == 0) {
-                a.setLabel(RAnswer.get(Qnumber));
-                b.setLabel(WAnswer.get(0).get(Qnumber));
-                if(!twoA) c.setLabel(WAnswer.get(1).get(Qnumber));
-                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
-                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
-                }
-                if(r == 1) {
-                a.setLabel(WAnswer.get(0).get(Qnumber));
-                b.setLabel(RAnswer.get(Qnumber));
-                if(!twoA) c.setLabel(WAnswer.get(1).get(Qnumber));
-                if(!threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
-                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
-                }
-                if(r == 2) {
-                a.setLabel(WAnswer.get(0).get(Qnumber));
-                if(twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
-                c.setLabel(RAnswer.get(Qnumber));
-                if(threeA) d.setLabel(WAnswer.get(2).get(Qnumber));
-                if(fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
-                }
-                if(r == 3) {
-                a.setLabel(WAnswer.get(0).get(Qnumber));
-                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
-                if(!threeA) c.setLabel(WAnswer.get(2).get(Qnumber));
-                d.setLabel(RAnswer.get(Qnumber));
-                if(!fourA) e.setLabel(WAnswer.get(3).get(Qnumber));
-                }
-                if(r == 4) {
-                a.setLabel(WAnswer.get(0).get(Qnumber));
-                if(!twoA) b.setLabel(WAnswer.get(1).get(Qnumber));
-                if(!threeA) c.setLabel(WAnswer.get(2).get(Qnumber));
-                if(!fourA) d.setLabel(WAnswer.get(3).get(Qnumber));
-                e.setLabel(RAnswer.get(Qnumber));
-                
-                
-                }
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Index");
-                }
-                //WORK ON THIS
                 */
     }
     
@@ -494,20 +412,20 @@ public class Take {
             //load();
             //Qnumber is the number of Questions left
             if(screen) quizSetup();
-            
-            int ntemp = Qnumber - count;
-            next.setLabel(count + " Questions Left");
-            
-            if(Qnumber <= 0) {
+            else {
+                
+            if(count <= 0) {
                 maining();//the final screen
             } else {
-                a.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp));
+                /*a.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp));
                 c.setLabel(RAnswer.get((RAnswer.size() - 1) - ntemp));
                 b.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp));
                 d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp));
                 e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp));
                 count = count - 1; //counts up
-                subt = subt + 1; //counts down
+                subt = subt + 1; //counts down */
+                qSetup(Qnumber - count); System.out.println("The Question Number is " + Qnumber);
+            }
             }
         }
     }
@@ -526,7 +444,40 @@ public class Take {
     public void load() {
         maining();
     }
-    public void qSetup() {
+    public void qSetup(int i) {
+        //WAnswer.get(0).size() = how many answer choices there are
+        //WAnswer.size() = how many questios there are
+        System.out.println("Went into qSetup");
+        next.setLabel(count + "Questions Left");
+        int ntemp = Qnumber - count;
+        
+        next.setLabel(count + " Questions Left");
+        if(RAnswer.get(i) != null)
+        a.setLabel(RAnswer.get(i));
+        else a.setLabel("Error: Doesn't Exist");
+        
+        if(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp) != null)
+        b.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp)); 
+        else b.setLabel("Error: Doesn't Exist");
+        
+        if(perQuest >= 3) {
+        if(perQuest >= 4) {
+        if(perQuest == 5) {
+            if(WAnswer.get(3).get((WAnswer.get(3).size() - 1) - ntemp) != null)
+            e.setLabel(WAnswer.get(3).get((WAnswer.get(3).size() - 1) - ntemp)); 
+            else e.setLabel("Error: Doesn't Exist");
+        }
+            if(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp) != null)
+            d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp)); 
+            else d.setLabel("Error: Doesn't Exist");
+        }
+            
+            if(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp) != null)
+            c.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp)); 
+            else c.setLabel("Error: Doesn't Exist"); 
+        }
+        Quest.setText(QuestA.get(i));
+       count = count - 1;
         
     }
     public void quiztaking() {
@@ -536,3 +487,4 @@ public class Take {
         
     }
 }
+

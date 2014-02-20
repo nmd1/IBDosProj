@@ -104,7 +104,7 @@ public class Save {
                 /*int choice = */JOptionPane.showConfirmDialog(null, 
                         "There was a problem accessing the file. Try again", 
                         "Are you sure?", JOptionPane.YES_OPTION);
-                if(debug == true) System.out.println(e);
+                if(debug) System.out.println(e);
             }
             } else {
                 System.out.println("File access cancelled by user.");
