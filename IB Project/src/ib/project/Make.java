@@ -24,7 +24,7 @@ public class Make {
     Choice s;
     int xc,yc,Qnumb;
     public Make() {
-        if(debug) prop.addMouseListener(new PanelListener());
+        if(debug == true) prop.addMouseListener(new PanelListener());
     }
         private class PanelListener extends MouseAdapter {
         @Override
@@ -131,7 +131,7 @@ public class Make {
                 
                 if (e.getStateChange() == ItemEvent.SELECTED) { //if the checkbox is selected
                     String wait = ""; //creates a empty string to write to
-                    if (debug) System.out.println("True line reached"); //debug
+                    if (debug == true) System.out.println("True line reached"); //debug
                     boolean breaks = true; //to stop the while loop
                     while(breaks) { //keep looping until the input is correct
                         String response; //the input from the question box
@@ -167,7 +167,7 @@ public class Make {
                     //JOptionPane.show
                     l.setText(title + ": " +wait); //change the text of the label to the resonse
                     } else { //if the checkbox is unselected
-                    if (debug) System.out.println("False line reached");
+                    if (debug == true) System.out.println("False line reached");
                     l.setVisible(false); //remove the label
                     }   
            }
@@ -250,7 +250,7 @@ public class Make {
                 try{
                     tempL = Integer.parseInt(PercentNum.getText());
                 } catch (NumberFormatException e) {
-                    if (debug) System.out.println(e);
+                    if (debug = true) System.out.println(e);
                     PercentNum.setText("");
                     tempL = 0;
                 }
@@ -278,7 +278,7 @@ public class Make {
                 
             
             properties.clear();
-            if (debug) System.out.println("Timer is " + timer.getState());
+            if (debug = true) System.out.println("Timer is " + timer.getState());
             
             if(timer.getState()) {
                properties.add("Ttrue");
@@ -287,7 +287,7 @@ public class Make {
                 properties.add("Tfalse");
             }
             
-            if (debug) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
+            if (debug = true) System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
             if(repeat.getState()) {
                 properties.add("Rtrue");
                 properties.add("RV" + Re.getText());
@@ -304,9 +304,9 @@ public class Make {
             if(!PercentNum.getText().equalsIgnoreCase("") || !PercentNum.getText().equalsIgnoreCase("0"))
                 properties.add("%" + PercentNum.getText() + "%");
             else
-                properties.add("%" + 100 + "%");
+                properties.add("PercentNum = 100");
             
-            if (debug) System.out.println("\nPROPERTIES" + properties);            
+            if (debug = true) System.out.println("\nPROPERTIES" + properties);            
             QuestionsIn();
             /*
             0 refers to the If there is a timer
@@ -442,7 +442,7 @@ public class Make {
                 d.setText("");
                 e.setText("");
                 if(ready) {
-                    if(debug)  System.out.println("QUESTIONS:" + QuestA + 
+                    if(debug == true)  System.out.println("QUESTIONS:" + QuestA + 
                         "\n" + "ANSWERS:" + RAnswer + "\n" + "WRONG:" + WAnswer);                          
                 Save s = new Save();
                 s.Saving(); //next File 
