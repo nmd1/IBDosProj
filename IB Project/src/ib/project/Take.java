@@ -240,21 +240,73 @@ public class Take {
            //spitting this up into that mutidimentional list
            ArrayList<String> tempList = new ArrayList<String>();
            i = 0;
+           //WANSWER ADDING
            WAnswer.clear();
-           String[] tempA;
+           String[] tempA, oneA = null, twoA = null, threeA = null, fourA = null;
            for(String a: ArrayString2) {
                 tempA = ArrayString2[i].split(",");
-                Collections.addAll(tempList, tempA);
-                WAnswer.add(i, tempList);
+                
+                //======removing brackets========
+                int n = tempA.length - 1;
+                //this is for the [
+                String[] temperA = tempA[0].split(""); //an array of each individual character 
+                ArrayList<String> list = new ArrayList(Arrays.asList(temperA));
+                int ind = 0;
+                //gets rid of the brackets once and for all
+                while (ind < list.size()) {
+                    if(list.get(ind).equals("[") || list.get(ind).equals("]"))  {
+                        // Remove item
+                        list.remove(ind);
+                        list.add(ind, "");
+                        break;
+                    } else {
+                        ++ind;
+                    }
+                }
+                temperA = list.toArray(temperA);
+                tempA[0] = arrayToString(temperA);
+                
+                //now for the ]
+                temperA = tempA[n].split("");
+                list = new ArrayList(Arrays.asList(temperA));
+                ind = 0;
+                while (ind < list.size()) {
+                    if(list.get(ind).equals("[") || list.get(ind).equals("]"))  {
+                        // Remove item
+                        list.remove(ind);
+                        list.add(ind, "");
+                        break;
+                    } else {
+                        ++ind;
+                    }
+                }
+                temperA = list.toArray(temperA);
+                tempA[n] = arrayToString(temperA);
+                // =====END removing brackets======
+                
+                //Collections.addAll(tempList, tempA);
+                if(i == 0) oneA = tempA;
+                if(i == 1) twoA = tempA;
+                if(i == 2) threeA = tempA;
+                if(i == 3) fourA = tempA;
                 i++; //fix ize problem
            }
-           /*try {
-               while(true) {
-                WAnswer.remove(perQuest);
-               }
-           } catch(IndexOutOfBoundsException e){
-               System.out.println(WAnswer);
-           }*/
+           ArrayList<String> temp =  new ArrayList<String>(Arrays.asList(oneA));
+           WAnswer.add(0, temp);
+           if(perQuest >= 3){
+               temp = new ArrayList<String>(Arrays.asList(twoA));
+               WAnswer.add(1, temp);
+           }
+           if(perQuest >= 4){
+               temp = new ArrayList<String>(Arrays.asList(threeA));
+               WAnswer.add(2, temp);
+           }
+           if(perQuest == 5){
+               temp = new ArrayList<String>(Arrays.asList(fourA));
+               WAnswer.add(3, temp);
+           }
+           WAnswer.getClass();//erase at one point
+           //END WANSWER ADDING
            
            //Done. now for the other two.
            QuestA.clear();
@@ -462,28 +514,30 @@ public class Take {
         if(next.getLabel().equals("0 Questions Left"))
             next.setLabel("Done with Quiz");
         
+        //End speical button speifications
+        
         if(RAnswer.get(i) != null)
         a.setLabel(RAnswer.get(i));
         else a.setLabel("Error: Doesn't Exist");
         
-        if(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp) != null)
-        b.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp)); 
+        if(WAnswer.get(0).get(i) != null)
+        b.setLabel(WAnswer.get(0).get(i)); 
         else b.setLabel("Error: Doesn't Exist");
         
         if(perQuest >= 3) {
         if(perQuest >= 4) {
         if(perQuest == 5) {
-            if(WAnswer.get(3).get((WAnswer.get(3).size() - 1) - ntemp) != null)
-            e.setLabel(WAnswer.get(3).get((WAnswer.get(3).size() - 1) - ntemp)); 
+            if(WAnswer.get(3).get(i) != null)
+            e.setLabel(WAnswer.get(3).get(i)); 
             else e.setLabel("Error: Doesn't Exist");
         }
-            if(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp) != null)
-            d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp)); 
+            if(WAnswer.get(2).get(i) != null)
+            d.setLabel(WAnswer.get(2).get(i)); 
             else d.setLabel("Error: Doesn't Exist");
         }
             
-            if(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp) != null)
-            c.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp)); 
+            if(WAnswer.get(1).get(i) != null)
+            c.setLabel(WAnswer.get(1).get(i)); 
             else c.setLabel("Error: Doesn't Exist"); 
         }
         Quest.setText(QuestA.get(i));
@@ -495,6 +549,14 @@ public class Take {
     }
     public void end(){
         
+    }
+    public String arrayToString(String[] arr) {
+        StringBuffer result = new StringBuffer();
+        for (String arr1 : arr) {
+            result.append(arr1);
+        }
+        String thisString = result.toString();
+        return thisString;
     }
     public void printd(String a) {
         if(debug) System.out.println(a);

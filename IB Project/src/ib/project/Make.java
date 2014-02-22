@@ -418,6 +418,7 @@ public class Make {
                 } else if(Qnumb == 0) {
                     ready = true;
                 }
+                // HEEEEEEERRRRRRRRRRRRREEEEEEEEEEEEEEEEEE for CommaProblem
                 QuestA.add(Question.getText());
                 RAnswer.add(a.getText());
                 WAnswer.get(0).add(b.getText());
