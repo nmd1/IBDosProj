@@ -305,7 +305,6 @@ public class Take {
                temp = new ArrayList<String>(Arrays.asList(fourA));
                WAnswer.add(3, temp);
            }
-           WAnswer.getClass();//erase at one point
            //END WANSWER ADDING
            
            //Done. now for the other two.
@@ -327,13 +326,13 @@ public class Take {
                System.out.println("MisMatch Error: Qnumb & RightSize");
                System.out.println("Qnumb:" + Qnumber + " RightSize:" + RAnswer.size());
            }
-           if(WAnswer.size() != RAnswer.size()) {
+           if(WAnswer.get(0).size() != RAnswer.size()) {
                System.out.println("MisMatch Error: WrongSize & RightSize");
-               System.out.println("WrongSize:" +  WAnswer.size() + " RightSize:" + RAnswer.size());
+               System.out.println("WrongSize:" +  WAnswer.get(0).size() + " RightSize:" + RAnswer.size());
            }
-           if(WAnswer.size() != Qnumber) {
+           if(WAnswer.get(0).size() != Qnumber) {
               System.out.println("MisMatch Error: Qnumb & Wrongsize");
-              System.out.println("Qnumb:" + Qnumber + " WrongSize:" +  WAnswer.size());
+              System.out.println("Qnumb:" + Qnumber + " WrongSize:" +  WAnswer.get(0).size());
            }
            }
            System.out.println("Test:" + WAnswer.size());
@@ -515,32 +514,46 @@ public class Take {
             next.setLabel("Done with Quiz");
         
         //End speical button speifications
-        
+        ArrayList<String> toRand= new ArrayList<String>();
         if(RAnswer.get(i) != null)
-        a.setLabel(RAnswer.get(i));
-        else a.setLabel("Error: Doesn't Exist");
+        toRand.add(RAnswer.get(i));
+        else a.setLabel("Error: Something went wrong");
         
         if(WAnswer.get(0).get(i) != null)
-        b.setLabel(WAnswer.get(0).get(i)); 
-        else b.setLabel("Error: Doesn't Exist");
+        toRand.add(WAnswer.get(0).get(i)); 
+        else b.setLabel("Error: Somthing went wrong");
         
         if(perQuest >= 3) {
-        if(perQuest >= 4) {
-        if(perQuest == 5) {
-            if(WAnswer.get(3).get(i) != null)
-            e.setLabel(WAnswer.get(3).get(i)); 
-            else e.setLabel("Error: Doesn't Exist");
-        }
-            if(WAnswer.get(2).get(i) != null)
-            d.setLabel(WAnswer.get(2).get(i)); 
-            else d.setLabel("Error: Doesn't Exist");
-        }
-            
             if(WAnswer.get(1).get(i) != null)
-            c.setLabel(WAnswer.get(1).get(i)); 
+            toRand.add(WAnswer.get(1).get(i)); 
             else c.setLabel("Error: Doesn't Exist"); 
         }
-        Quest.setText(QuestA.get(i));
+        
+        if(perQuest >= 4) {
+            if(WAnswer.get(2).get(i) != null)
+            toRand.add(WAnswer.get(2).get(i)); 
+            else d.setLabel("Error: Doesn't Exist");
+        }
+        
+        if(perQuest == 5) {
+            if(WAnswer.get(3).get(i) != null)
+            toRand.add(WAnswer.get(3).get(i)); 
+            else e.setLabel("Error: Doesn't Exist");
+        }
+       Random r = new Random(Math.abs(System.nanoTime())); //this sounds awesome
+       Collections.shuffle(toRand,r);
+       
+       
+       for(int j = 0; j < toRand.size(); j++) {
+           if(j == 0)a.setLabel(toRand.get(0));
+           if(j == 1)b.setLabel(toRand.get(1));
+           if(j == 2)c.setLabel(toRand.get(2));
+           if(j == 3)d.setLabel(toRand.get(3));
+           if(j == 4)e.setLabel(toRand.get(4));
+       }
+       
+       
+       Quest.setText(QuestA.get(i));
        if(count > 0) count = (count - 1);
 
     }
