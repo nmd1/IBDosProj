@@ -132,7 +132,7 @@ public class Take {
                 java.io.File[] f = file.listFiles();
                 if(f != null)
                 for(java.io.File a : f){
-                    if(a.getName().endsWith("DATA.txt")) {
+                    if(a.getName().endsWith("Data.txt")) {
                         drop.addItem(a.getName());
                         propB.setEnabled(true);
                         theFiles.add(a);
@@ -361,19 +361,19 @@ public class Take {
         takePane.add(next);
             takePane.add(a);
             takePane.add(b);
-            takePane.add(c);
-            takePane.add(d);
-            takePane.add(e);
+            if(perQuest >= 3) takePane.add(c);
+            if(perQuest >= 4) takePane.add(d);
+            if(perQuest == 5) takePane.add(e);
             takePane.add(Quest);
-            //randomize and check to see if c,d, or e exist
             
-            qSetup(0);
+            
             //e.setLabel(WAnswer.get(4).get(0));
             a.setVisible(true);
             b.setVisible(true);
-            c.setVisible(true);
-            d.setVisible(true);
-            e.setVisible(true);
+            if(perQuest >= 3) c.setVisible(true);
+            if(perQuest >= 4) d.setVisible(true);
+            if(perQuest == 5) e.setVisible(true);
+            
             Quest.setVisible(true);
             
         //next.setLabel(Qnumber + " Questions Left");
@@ -382,7 +382,11 @@ public class Take {
         Quest.setPreferredSize(new Dimension(300, 100));
         layout();
         Layout(next, 130, 400);
+        printd("Quizsetupbeforecount: " + count);
         count = Qnumber;
+        
+        qSetup(0);
+        printd("QuizsetupAFTERcount: " + count);
                 //properties.get(0);
                 /*
                 
@@ -413,7 +417,7 @@ public class Take {
             //Qnumber is the number of Questions left
             if(screen) quizSetup();
             else {
-                
+                printd("Count HERE IS: " + count);
             if(count <= 0) {
                 maining();//the final screen
             } else {
@@ -421,10 +425,10 @@ public class Take {
                 c.setLabel(RAnswer.get((RAnswer.size() - 1) - ntemp));
                 b.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp));
                 d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp));
-                e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp));
-                count = count - 1; //counts up
-                subt = subt + 1; //counts down */
-                qSetup(Qnumber - count); System.out.println("The Question Number is " + Qnumber);
+                e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp)); */
+                printd("The Question BEFORE Number is " + (Qnumber - count));
+                qSetup(Qnumber - count); printd("The Question Number is " + (Qnumber - count));
+
             }
             }
         }
@@ -447,11 +451,17 @@ public class Take {
     public void qSetup(int i) {
         //WAnswer.get(0).size() = how many answer choices there are
         //WAnswer.size() = how many questios there are
-        System.out.println("Went into qSetup");
-        next.setLabel(count + "Questions Left");
+        printd("Went into qSetup");
         int ntemp = Qnumber - count;
         
-        next.setLabel(count + " Questions Left");
+        //special spefications for the button
+        
+        next.setLabel( (count - 1) + " Questions Left");
+        if(next.getLabel().equals("1 Questions Left"))
+            next.setLabel("1 Question Left");
+        if(next.getLabel().equals("0 Questions Left"))
+            next.setLabel("Done with Quiz");
+        
         if(RAnswer.get(i) != null)
         a.setLabel(RAnswer.get(i));
         else a.setLabel("Error: Doesn't Exist");
@@ -477,14 +487,17 @@ public class Take {
             else c.setLabel("Error: Doesn't Exist"); 
         }
         Quest.setText(QuestA.get(i));
-       count = count - 1;
-        
+       if(count > 0) count = (count - 1);
+
     }
     public void quiztaking() {
     
     }
     public void end(){
         
+    }
+    public void printd(String a) {
+        if(debug) System.out.println(a);
     }
 }
 

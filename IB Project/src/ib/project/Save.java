@@ -1,6 +1,7 @@
 package ib.project;
 
 import static ib.project.Main.*;
+
 import java.awt.Button;
 import java.util.*;
 import java.awt.event.*;
@@ -104,7 +105,7 @@ public class Save {
                 /*int choice = */JOptionPane.showConfirmDialog(null, 
                         "There was a problem accessing the file. Try again", 
                         "Are you sure?", JOptionPane.YES_OPTION);
-                if(debug) System.out.println(e);
+                printd("" + e);
             }
             } else {
                 System.out.println("File access cancelled by user.");
@@ -147,6 +148,9 @@ public class Save {
             start.setVisible(false);
             //maybe create an erase method?
         }  
+    }
+    public void printd(String a) {
+        if(debug) System.out.println(a);
     }
 }
 
