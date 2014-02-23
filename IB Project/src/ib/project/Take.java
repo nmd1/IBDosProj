@@ -1,11 +1,14 @@
 package ib.project;
 
 import static ib.project.Main.*;
+import ib.project.Score.*;
 import java.awt.Button;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.io.*;
 import java.text.CharacterIterator;
@@ -46,6 +49,7 @@ public class Take {
         main.setVisible(false);
         prop.setVisible(false);
         save.setVisible(false);
+        scor.setVisible(false);
         takePane = start.getContentPane();
         takePane.setLayout(layout);
         setup();
@@ -404,6 +408,7 @@ public class Take {
         return token;
     }
     public void quizSetup() {
+        next.setEnabled(false);
         screen = false;
         System.out.println("went into quiz setup");
         
@@ -435,75 +440,52 @@ public class Take {
         Layout(next, 130, 400);
         printd("Quizsetupbeforecount: " + count);
         count = Qnumber;
-        
         qSetup(0);
         printd("QuizsetupAFTERcount: " + count);
-                //properties.get(0);
-                /*
-                
-                
-                long seed = System.nanoTime();
-                Collections.shuffle(QuestA, new Random(seed));
-                Collections.shuffle(RAnswer, new Random(seed));
-                Collections.shuffle(WAnswer, new Random(seed));
-                
-                /* store a set of a's a set of b's a set of c's....
-                store a for #1, a for #2, a for #3
-                so basically every time you move on to a next question,
-                randomize the array lists in the array.
-                then go to that coresponding question number in that array list.
-                BAM.
-   A's a array  [][][][][]
-             B  [][][][][]
-             C  [][][][][]
-             D  [][][][][]
-                1 2 3 4 5
-                */
+        a.addItemListener(new canMove());
+        b.addItemListener(new canMove());
+        c.addItemListener(new canMove());
+        d.addItemListener(new canMove());
+        e.addItemListener(new canMove());
+        
+    }
+    private class canMove implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent ie) {
+            next.setEnabled(true);
+        }
     }
     
     private class Move implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            //load();
-            //Qnumber is the number of Questions left
             if(screen) quizSetup();
             else {
                 printd("Count HERE IS: " + count);
             if(count <= 0) {
-                maining();//the final screen
+                leave();//the final screen
             } else {
-                /*a.setLabel(WAnswer.get(0).get((WAnswer.get(0).size() - 1) - ntemp));
-                c.setLabel(RAnswer.get((RAnswer.size() - 1) - ntemp));
-                b.setLabel(WAnswer.get(1).get((WAnswer.get(1).size() - 1) - ntemp));
-                d.setLabel(WAnswer.get(2).get((WAnswer.get(2).size() - 1) - ntemp));
-                e.setLabel(WAnswer.get(3).get((WAnswer.get(2).size() - 1) - ntemp)); */
-                printd("The Question BEFORE Number is " + (Qnumber - count));
-                qSetup(Qnumber - count); printd("The Question Number is " + (Qnumber - count));
-
+                if(Ans.getSelectedCheckbox().getLabel().equalsIgnoreCase
+                (RAnswer.get(Qnumber - count - 1)) ) {
+                    Qright = Qright + 1;
+                } else {
+                    Qwrong = Qwrong + 1;
+                }
+                qSetup(Qnumber - count);
+                if(Ans.getSelectedCheckbox() == null) next.setEnabled(false);
+                
             }
             }
         }
     }
-    /*public String[] Rand(int i) {
-        String a[] = new String[i];
-        Random r = new Random(i);
-        int rand = r.nextInt(i);
-        for(int j = 0; j < a.length - 1; j++) {
-            
-        }
-        return a;
-        Main asdf = new Main();
-   // asdf.maining();
-    
-    } */
-    public void load() {
-        maining();
+    public void leave() {
+        Score s = new Score();
+        s.scoring();
     }
     public void qSetup(int i) {
         //WAnswer.get(0).size() = how many answer choices there are
         //WAnswer.size() = how many questios there are
         printd("Went into qSetup");
-        int ntemp = Qnumber - count;
         
         //special spefications for the button
         
@@ -557,14 +539,8 @@ public class Take {
        if(count > 0) count = (count - 1);
 
     }
-    public void quiztaking() {
-    
-    }
-    public void end(){
-        
-    }
     public String arrayToString(String[] arr) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         for (String arr1 : arr) {
             result.append(arr1);
         }

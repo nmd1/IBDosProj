@@ -26,7 +26,7 @@ public class Make {
     public Make() {
          prop.addMouseListener(new PanelListener());
     }
-        private class PanelListener extends MouseAdapter {
+    private class PanelListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             xc = e.getX();

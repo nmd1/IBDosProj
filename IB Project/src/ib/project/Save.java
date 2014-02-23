@@ -141,9 +141,13 @@ public class Save {
     private class Menu implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
+            Main m = new Main();
+            main.setVisible(true);
+            save.dispose();
+            prop.dispose();
             save.setVisible(false);
             buttons();
-            main.setVisible(true);
+            
             prop.setVisible(false);
             start.setVisible(false);
             //maybe create an erase method?

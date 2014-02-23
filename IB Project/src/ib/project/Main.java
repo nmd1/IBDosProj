@@ -8,22 +8,26 @@ import javax.swing.*;
 
 public class Main extends JPanel {
     
-    public static JFrame main, prop, start, save;
+    public static JFrame main, prop, start, save, scor;
     static Container pane;
-    static TextArea area;
-    static TextField txtName, a1, b1, c1, m1;
+   // static TextField;
     static Button makeB, takeB, helpB;
     static Checkbox check;
-    static Component d;
     public static Choice equations;
-    public static Label bigLabel = new Label();
     //static String properties;
     static ArrayList<String> properties = new ArrayList<String>();
     static ArrayList<String> QuestA = new ArrayList<String>();
     static ArrayList<String> RAnswer = new ArrayList<String>();
     static ArrayList<ArrayList<String>> WAnswer = new ArrayList<ArrayList<String>>();
     static boolean debug = true;
+    static int Qright, Qwrong;
     public static void main(String[] args) {
+        //Main useless = new Main();
+        //useless.mainRun();
+        mainRun();
+    }
+    
+    public static void mainRun() {
         //Main Properties//
         main = new JFrame();
         main.setTitle("Main Menu");
@@ -51,6 +55,11 @@ public class Main extends JPanel {
         start.setSize(500,280);
         newPanel(start);
         
+        //Scoring start properties//
+        scor = new JFrame();
+        scor.setTitle("Your Results");
+        scor.setSize(320,250);
+        newPanel(scor);
         // JObjects
         
         //buttons
@@ -116,15 +125,7 @@ public class Main extends JPanel {
             j.setVisible(false);
         }
     }
-    public static void maining() {
-        Take t = new Take();
-//        int percentage = t.right/t.count;
-        bigLabel.setText("Congrats, You're done!");
-        makeB.setLabel("Exit");
-        takeB.setVisible(false);
-        makeB.addActionListener(new exiting());
-        helpB.setVisible(false);
-    }
+    public static void maining() {}
     
      public static class exiting implements ActionListener {
         @Override
@@ -132,5 +133,5 @@ public class Main extends JPanel {
             System.exit(0);
         }
     }
-
+     
 }
