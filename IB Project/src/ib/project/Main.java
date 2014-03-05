@@ -30,6 +30,7 @@ public class Main extends JPanel {
     public static void mainRun() {
         //Main Properties//
         main = new JFrame();
+        main.update(null);
         main.setTitle("Main Menu");
         newPanel(main);
         main.setSize(500,200);
@@ -87,6 +88,8 @@ public class Main extends JPanel {
         pane.add(makeB);
         pane.add(takeB);
         pane.add(helpB);
+        
+        ;
         
     }
     

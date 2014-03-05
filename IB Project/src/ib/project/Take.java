@@ -30,7 +30,7 @@ public class Take {
     boolean screen;
     int xc, yc, Qnumber;
     int timerTime, repeatTime, perQuest, percent, left, right, count, subt;
-    boolean timerV = false, repeatV = false;
+    boolean timerV = false, repeatV = false, secondT = false;
     
     public Take() {
         if(debug) start.addMouseListener(new PanelListener());
@@ -53,19 +53,33 @@ public class Take {
         takePane = start.getContentPane();
         takePane.setLayout(layout);
         setup();
-        screen = true;
-        
-        
+        screen = true;   
     }
+    public void Taking(boolean b) {
+        start.setVisible(true);
+        main.setVisible(false);
+        prop.setVisible(false);
+        save.setVisible(false);
+        scor.setVisible(false);
+        takePane = start.getContentPane();
+        takePane.setLayout(layout);
+        setup();
+        screen = true;   
+        start.setResizable(false);
+    }
+    
     public void Layout(Component c, int x, int y) {
         layout.putConstraint(SpringLayout.WEST, c,x, SpringLayout.WEST, takePane);
         layout.putConstraint(SpringLayout.NORTH, c,y,SpringLayout.NORTH, takePane);
     }
     public void setup(){
         Dimension di = new Dimension(100,40);
+        if(secondT) {
         drop = new Choice();
         drop.setPreferredSize(new Dimension(100,100));
         takePane.add(drop);
+        }
+        //continue with this second T
         
         getQuiz = new Button("Open Folder");
         takePane.add(getQuiz);

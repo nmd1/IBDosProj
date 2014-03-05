@@ -66,14 +66,14 @@ public class Save {
         fc.setApproveButtonToolTipText("Save the \" Data.txt \" file in this current folder");
           int returnVal = fc.showOpenDialog(saverPane);
           if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = new File(fc.getSelectedFile().getAbsolutePath() + "/DATA.txt"); //fileChooser.getSelectedFile();
+            File file = new File(fc.getSelectedFile().getAbsolutePath() + "/Data.txt"); //fileChooser.getSelectedFile();
             
             //fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
             //fc.showSaveDialog(saverPane);
             try {
                 BufferedWriter output = new BufferedWriter(new FileWriter(file));
                 System.out.println(file.toPath());
-                output.write("QUIZ DATA\n");
+                output.write("QUIZ Data\n");
                 output.newLine();
                 output.write("" + properties);
                 output.newLine();

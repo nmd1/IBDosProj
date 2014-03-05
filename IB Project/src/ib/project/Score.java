@@ -96,8 +96,9 @@ public class Score {
         public void actionPerformed(ActionEvent ae) {
             Reset r = new Reset();
             Take t = new Take();
-            r.resetTake();
-            t.Taking();
+            //r.resetTake();
+            t.Taking(false);
+            ////////////
             
         }
     }
