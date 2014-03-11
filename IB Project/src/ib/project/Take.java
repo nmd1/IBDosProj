@@ -20,7 +20,7 @@ public class Take {
     //anyways, global variables
     Container takePane;
     SpringLayout layout = new SpringLayout();
-    Choice drop;
+    Choice drop = new Choice();
     Button getQuiz, propB, next;
     JFileChooser fc = new JFileChooser();
     ArrayList<java.io.File> theFiles;String everything;
@@ -30,7 +30,7 @@ public class Take {
     boolean screen;
     int xc, yc, Qnumber;
     int timerTime, repeatTime, perQuest, percent, left, right, count, subt;
-    boolean timerV = false, repeatV = false, secondT = false;
+    boolean timerV = false, repeatV = false, secondT = true;
     
     public Take() {
         if(debug) start.addMouseListener(new PanelListener());
@@ -62,10 +62,12 @@ public class Take {
         save.setVisible(false);
         scor.setVisible(false);
         takePane = start.getContentPane();
-        takePane.setLayout(layout);
-        setup();
+        takePane.setLayout(layout);//
+        secondT = false;
+        Qnumber = 0;
+        count = 0;
         screen = true;   
-        start.setResizable(false);
+        //start.setResizable(false);
     }
     
     public void Layout(Component c, int x, int y) {
@@ -74,29 +76,33 @@ public class Take {
     }
     public void setup(){
         Dimension di = new Dimension(100,40);
-        if(secondT) {
+        
         drop = new Choice();
         drop.setPreferredSize(new Dimension(100,100));
         takePane.add(drop);
-        }
         //continue with this second T
         
-        getQuiz = new Button("Open Folder");
-        takePane.add(getQuiz);
-        getQuiz.addActionListener(new File());
-        getQuiz.setPreferredSize(di);
-        
-        propB = new Button("Load Info");
-        takePane.add(propB);
-        propB.addActionListener(new Iload());
-        propB.setPreferredSize(di);
-        propB.setEnabled(false);
         
         next = new Button("Take Quiz");
         takePane.add(next);
         next.addActionListener(new Move());
         next.setEnabled(false);
         next.setPreferredSize(new Dimension(200,40));
+        
+        if(secondT) { //dont run the second time
+        propB = new Button("Load Info");
+        takePane.add(propB);
+        propB.addActionListener(new Iload());
+        propB.setPreferredSize(di);
+        propB.setEnabled(false);
+        }
+        
+        getQuiz = new Button("Open Folder");
+        takePane.add(getQuiz);
+        getQuiz.addActionListener(new File());
+        getQuiz.setPreferredSize(di);
+        
+        
         
         a = new Checkbox("",false,Ans);takePane.add(a);
         b = new Checkbox("",false,Ans);takePane.add(b);
@@ -113,7 +119,6 @@ public class Take {
         c.setPreferredSize(new Dimension(300,40));
         d.setPreferredSize(new Dimension(300,40));
         e.setPreferredSize(new Dimension(300,40));
-        
         s.setPreferredSize(new Dimension(300,40));
         takePane.add(s);
         
@@ -121,9 +126,11 @@ public class Take {
     }
     public void layout() {
         int x = 50, y = 80;
-        Layout(drop,170,70);
-        Layout(getQuiz,100,30);
+        Layout(drop,170,70); //Why is there an error here
+        if(secondT) {
         Layout(propB, 230,30);
+        }
+        Layout(getQuiz,100,30);
         Layout(s, 120, 150);
         Layout(next, 130, 180);
         
@@ -159,10 +166,9 @@ public class Take {
             }
         }
     }
-    private class Iload implements ActionListener { //fix more
-    @Override
-         public void actionPerformed(ActionEvent ae) {
-           System.out.println("");
+    
+    public void start() {
+        System.out.println("");
            getQuiz.setEnabled(false);
            drop.setEnabled(false);
            //get the properties
@@ -362,9 +368,15 @@ public class Take {
            
            s.setText("Loading Quiz was scucess: Quiz Ready"); //if not sucess, prevent next from appearing
            subt = 0;
-           next.setEnabled(true);
-        }  
+           next.setEnabled(true); 
     }
+    private class Iload implements ActionListener {
+    @Override
+         public void actionPerformed(ActionEvent ae) {
+             start();
+         }
+    }
+    
     public String betterReplace(String str, int i) {
         String token = str;
         StringBuffer s = new StringBuffer(token.length());
