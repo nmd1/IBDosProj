@@ -43,6 +43,7 @@ public class Score {
         layout.putConstraint(SpringLayout.NORTH, c,y,SpringLayout.NORTH, scorerPane);
     }
     public void setup() {
+        Take t = new Take();
         Font f = new Font("Verdana", Font.PLAIN, 15);
         Dimension di = new Dimension(75,40);
         rightL = new Label("You got " + Qright + " Questions right");
@@ -60,7 +61,7 @@ public class Score {
         reTakeB = new Button("Retake Quiz");
         reTakeB.setPreferredSize(di);
         scorerPane.add(reTakeB);
-        reTakeB.addActionListener(new back());
+        reTakeB.addActionListener(new back());//this right here
         mainMB = new Button("Main Menu");
         mainMB.setPreferredSize(di);
         scorerPane.add(mainMB);

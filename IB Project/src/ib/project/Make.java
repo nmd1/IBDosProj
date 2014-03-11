@@ -35,7 +35,6 @@ public class Make {
         }
     }
     
-    
     public void QuizCreation() {
         prop.setVisible(true);
         main.setVisible(false);

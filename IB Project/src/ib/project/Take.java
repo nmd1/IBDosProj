@@ -65,7 +65,6 @@ public class Take {
         takePane.setLayout(layout);//
         secondT = false;
         Qnumber = 0;
-        count = 0;
         screen = true;   
         //start.setResizable(false);
     }
@@ -485,6 +484,7 @@ public class Take {
     private class Move implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
+            //if(secondT) 
             if(screen) quizSetup();
             else {
                 printd("Count HERE IS: " + count);
