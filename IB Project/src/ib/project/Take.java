@@ -176,30 +176,32 @@ public class Take {
            try {
                 BufferedReader br = new BufferedReader(new FileReader(quizProp));
                 StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
+                String line = br.readLine(); //get each line
 
                 while (line != null) {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    line = br.readLine();
+                    line = br.readLine(); // read each line
                 }
-                everything = sb.toString();
+                everything = sb.toString(); //add it into 'everything'
                 br.close();
            } catch(IOException e) {
                 System.out.println(e);
            }
            
-           everything = everything.replaceAll("QUIZ DATA", "");
-           everything = everything.trim();
-           String[] ArrayString2, ArrayString = everything.split("\n");
-           ArrayString[0] = ArrayString[0].replaceFirst("\\[ ", "{");
-           int l = ArrayString.length - 1; //the WAnswers
-           ArrayString[l] = ArrayString[l].replaceFirst("\\[", "{");
+           everything = everything.replaceAll("QUIZ Data", ""); //get rid of the title
+           everything = everything.trim(); //remove whitesapce
+           String[] ArrayString2, ArrayString = everything.split("\n"); //seperate everything line by line
+           
+           //replace the first brackets
+           ArrayString[0] = ArrayString[0].replaceFirst("\\[ ", "{"); //change the outer brackets to curly brackets
+           int l = ArrayString.length - 1; //index of the WAnswers
+           ArrayString[l] = ArrayString[l].replaceFirst("\\[", "{");//change the outer brackets to curly brackets
            ArrayString[l] = ArrayString[l].replaceAll("],", "] |");
            
-           //replace last
+           //replace the last brackets
            StringBuilder b = new StringBuilder(ArrayString[l]);
-           b.replace(ArrayString[l].lastIndexOf("]"), ArrayString[l].lastIndexOf("]") + 1, "}" );
+           b.replace(ArrayString[l].lastIndexOf("]"), ArrayString[l].lastIndexOf("]") + 1, "}" );//change the inner brackets to curly brackets
            ArrayString[l] = b.toString();
            //replace last end
            ArrayString[l] = betterReplace(ArrayString[l], 1);
