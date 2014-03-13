@@ -46,7 +46,7 @@ public class Main extends JPanel {
         //Make Save properties
         save = new JFrame();
         save.setTitle("What would you like to do with your Quiz?");
-        save.setSize(400,250);
+        save.setSize(400,270);
         newPanel(save);
         
         //take start properties//
@@ -88,8 +88,7 @@ public class Main extends JPanel {
         pane.add(takeB);
         pane.add(helpB);
         
-        main.setVisible(true);
-        
+        main.setVisible(true);        
     }
     
     private static class info implements ActionListener {

@@ -29,10 +29,11 @@ public class Take {
     ArrayList<java.io.File> theFiles;String everything;
     Label s = new Label(), Quest = new Label();
     Checkbox a, b, c, d, e;
+    Date startDate;
     CheckboxGroup Ans = new CheckboxGroup();
-    boolean screen;
+    boolean screen, boolt;
     int xc, yc, Qnumber;
-    int timerTime, repeatTime, perQuest, percent, left, right, count, subt;
+    int timerTime, repeatTime, perQuest, percent, count, hour, minute, takenTimes;
     boolean timerV = false, repeatV = false, secondT = true;
     
     public Take() {
@@ -55,10 +56,11 @@ public class Take {
         scor.setVisible(false);
         takePane = start.getContentPane();
         takePane.setLayout(layout);
+        takenTimes = 0;
         setup();
         screen = true;   
     }
-    public void Taking(java.io.File f) {
+    public void Taking(java.io.File f, int count) {
         start.setVisible(true);
         main.setVisible(false);
         prop.setVisible(false);
@@ -70,6 +72,7 @@ public class Take {
         Qnumber = 0;
         screen = true;
         old = f;
+        takenTimes = count;
         restart();
         //start.setResizable(false);
     }
@@ -162,7 +165,10 @@ public class Take {
                 if(f != null)
                 for(java.io.File a : f){
                     if(a.getName().endsWith("Data.txt")) {
-                        drop.addItem(a.getName());
+                        if(! a.getName().equals("Data.txt"))
+                            drop.addItem(a.getName().replace("Data.txt", ""));
+                        else
+                            drop.addItem("Data");
                         propB.setEnabled(true);
                         theFiles.add(a);
                     }
@@ -281,7 +287,6 @@ public class Take {
            String x = scan.substring(scan.indexOf("= ") + 1);
            x = x.substring(0, x.indexOf(","));
            x = betterReplace(x , 2);
-           repeatTime = Integer.parseInt(x);
            Qnumber = Integer.parseInt(x);
            System.out.println(x);
            //catch
@@ -407,7 +412,6 @@ public class Take {
            
            
            s.setText("Loading Quiz was scucess: Quiz Ready"); //if not sucess, prevent next from appearing
-           subt = 0;
            next.setEnabled(true); 
     }
     private class Iload implements ActionListener {
@@ -475,6 +479,12 @@ public class Take {
     }
     
     public void quizSetup() {
+        hour  = Calendar.HOUR;
+        minute = Calendar.MINUTE;
+        printd("Hour & Minute: " + hour + ":" + minute);
+        startDate = new Date();
+        startDate.getTime();
+        
         next.setEnabled(false);
         screen = false;
         System.out.println("went into quiz setup");
@@ -531,7 +541,22 @@ public class Take {
             if(screen) quizSetup();
             else {
                 printd("Count HERE IS: " + count);
-            if(count <= 0) {
+                
+                int currentHour = Calendar.HOUR;
+                int currentMinute = Calendar.MINUTE;
+                int totalHour = currentHour - hour;
+                int totalMin = currentMinute - minute;
+                int totalTime = (totalHour * 60) + totalMin;
+                
+                printd("Hour & Minute: " + currentHour + ":" + currentMinute);
+                printd("Total H & R: " + totalHour + ":" + totalMin);
+                printd("TotalTime: " + totalTime);
+                boolean timeUp = false;
+                if(timerTime < totalTime) {
+                    timeUp = true; boolt = true;}
+                
+            if(count <= 0 || timeUp) {
+                takenTimes = takenTimes + 1;
                 leave();//the final screen
             } else {
                 if(Ans.getSelectedCheckbox().getLabel().equalsIgnoreCase
@@ -549,7 +574,8 @@ public class Take {
     }
     public void leave() {
         Score s = new Score();
-        s.scoring(trans);
+        s.scoring(trans, boolt, takenTimes, repeatTime);
+        int useless = 1;
     }
     public void nextQuestion(int i) {
         //WAnswer.get(0).size() = how many answer choices there are

@@ -15,8 +15,10 @@ public class Score {
     int xc, yc;
     Container scorerPane;
     SpringLayout layout = new SpringLayout();
-    Label rightL, percentL, timeL;
+    Label rightL, percentL, timeL, notif;
     java.io.File transfer;
+    boolean boolt = false;
+    int countTake, totalTimesTaken;
     
     public Score() {
         scor.addMouseListener(new PanelListener());
@@ -31,7 +33,7 @@ public class Score {
     }
     
     
-    public void scoring(java.io.File h) {
+    public void scoring(java.io.File h, boolean t, int take, int total) {
         
         start.setVisible(false);
 
@@ -45,6 +47,9 @@ public class Score {
         scor.setTitle("Your Results");
         scor.setSize(320,250);
         transfer = h;
+        boolt = t;
+        countTake = take;
+        totalTimesTaken = total;
         setup();
     }
     
@@ -55,15 +60,25 @@ public class Score {
     public void setup() {
         Take t = new Take();
         Font f = new Font("Verdana", Font.PLAIN, 15);
+        Font labf = new Font("Verdana", Font.PLAIN, 25);
         Dimension di = new Dimension(75,40);
-        rightL = new Label("You got " + Qright + " Questions right");
+        rightL = new Label("You got " + Qright + " questions right");
+        if(rightL.getText().equals("You got 1 questions right")) {
+            rightL.setText("You got 1 question right");
+        }
         rightL.setFont(f);
         scorerPane.add(rightL);
         double total = RAnswer.size();
         double d = (Qright / total) * 100;
         percentL = new Label(d+"%");
-        percentL.setFont(new Font("Verdana", Font.PLAIN, 25));
+        percentL.setFont(labf);
         scorerPane.add(percentL);
+        
+        notif = new Label();
+        if(boolt) notif.setText("You ran out of time.");
+        notif.setFont(f);
+        scorerPane.add(notif);
+        
         exitB = new Button("Exit");
         exitB.setPreferredSize(di);
         scorerPane.add(exitB);
@@ -76,6 +91,12 @@ public class Score {
         mainMB.setPreferredSize(di);
         scorerPane.add(mainMB);
         mainMB.addActionListener(new menu());
+        
+        if(totalTimesTaken < countTake + 1) {
+            reTakeB.setEnabled(false);
+            notif.setText("You can no longer retake the quiz");
+            if(boolt) notif.setText("You ran out of time and \nyou can no longer retake the quiz.");
+        }
         Layouts();
         scor.setVisible(true);
     }
@@ -83,6 +104,7 @@ public class Score {
         int x=0,y=0;
         Layout(exitB, 10, 165);
         Layout(rightL, 55, 10);
+        Layout(notif, 55,35);
         Layout(percentL, 110, 80);
         Layout(reTakeB, 115, 165);
         Layout(mainMB,215, 165);
@@ -109,7 +131,7 @@ public class Score {
             Take t = new Take();
             //r.resetTake();
             Qright = 0;
-            t.Taking(transfer);
+            t.Taking(transfer, countTake);
             ////////////
             
         }

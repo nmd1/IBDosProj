@@ -85,7 +85,7 @@ public class Reset {
     t.screen = true;
     t.xc = 0; t.yc = 0; t.Qnumber = 0;
     t.timerTime = 0; t.repeatTime = 0; t.perQuest = 0; t.percent = 0; 
-    t.left = 0; t.right = 0; t.count = 0; t.subt = 0;
+    t.count = 0;
     t.timerV = false; t.repeatV = false;
     }
 

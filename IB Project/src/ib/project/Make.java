@@ -45,7 +45,6 @@ public class Make {
         ordered();   
         Buttons();
         Checkbox();
-        Options();
         Textfield();
     }
     public void Layout(Component c, int x, int y) {
@@ -181,10 +180,7 @@ public class Make {
         }  
         return true;  
     }
-   
-    public void Options() {
-        //little to do with option buttons... may delete...
-    }
+    
     public void Textfield() {
         Nq.setText("Numer of Questions:");
         Pc.setText("Percent of Questions to be asked:");
@@ -280,7 +276,7 @@ public class Make {
             
             if(timer.getState()) {
                properties.add("Ttrue");
-               properties.add("TV" + Ti.getText());
+               properties.add("TV" + Ti.getText());//EDIT THESE VALUESFJSOIFSEFJOIPSEPFIPOISEF
             } else {
                 properties.add("Tfalse");
             }
@@ -288,7 +284,8 @@ public class Make {
              System.out.println("Repeat is " + repeat.getState() + " With value " + Re.getText());
             if(repeat.getState()) {
                 properties.add("Rtrue");
-                properties.add("RV" + Re.getText());
+                properties.add("RV" + Re.getText()); //EDIT THESE VALUESOIJOIEFJSOIEJFIJf
+                int useless = 3;
             } else {
                 properties.add("Rfalse");
             }

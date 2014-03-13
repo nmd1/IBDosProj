@@ -21,7 +21,8 @@ public class Save {
     Container saverPane;
     JFileChooser fc = new JFileChooser();
     SpringLayout layout = new SpringLayout();
-    Label Sucess = new Label();
+    Label Sucess = new Label(), nameL = new Label();
+    TextField name = new TextField();
     public void Saving() {
         prop.setVisible(false);
         main.setVisible(false);
@@ -29,12 +30,16 @@ public class Save {
         start.setVisible(false);
         saverPane = save.getContentPane();
         saverPane.setLayout(layout);
+        
         buttons();
     }
     public void order() {
         Layout(SavetoText, 40, 20);
         Layout(SaveandTake, 40, 80);
         Layout(TakeQuiz, 40, 140);
+        Layout(name, 200, 190);
+        Layout(nameL, 85, 190);
+       
     }
     public void buttons() {
         Dimension a = new Dimension(300,40);
@@ -53,6 +58,28 @@ public class Save {
         TakeQuiz.addActionListener(new TQ());
         leave.addActionListener(new Exit());
         mainB.addActionListener(new Menu());
+        nameL.setText("Name Your File");
+        saverPane.add(nameL);
+        name = new TextField();
+        name.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+                int tempI = ke.getKeyChar();
+                
+                boolean Capital = tempI >=65 || tempI <=90;
+                boolean Lower = tempI >= 97 || tempI <= 122;
+                boolean numbers = tempI >= 48 || tempI <= 57;
+                if(!(Capital || numbers || Lower)) { 
+                    ke.consume();
+                }
+            }
+            @Override
+            public void keyPressed(KeyEvent ke) {}
+            @Override
+            public void keyReleased(KeyEvent ke) {}
+        });
+       name.setColumns(7);
+       saverPane.add(name);
         order();
     }
     public void Layout(Component c, int x, int y) {
@@ -66,7 +93,7 @@ public class Save {
         fc.setApproveButtonToolTipText("Save the \" Data.txt \" file in this current folder");
           int returnVal = fc.showOpenDialog(saverPane);
           if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = new File(fc.getSelectedFile().getAbsolutePath() + "/Data.txt"); //fileChooser.getSelectedFile();
+            File file = new File(fc.getSelectedFile().getAbsolutePath() + "/"+name.getText()+"Data.txt"); //fileChooser.getSelectedFile();
             
             //fileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
             //fc.showSaveDialog(saverPane);
