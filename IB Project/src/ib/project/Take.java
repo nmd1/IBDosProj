@@ -14,6 +14,8 @@ import java.io.*;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Take {
     //This is it.. the last file. Probably the biggest.
@@ -23,6 +25,7 @@ public class Take {
     Choice drop = new Choice();
     Button getQuiz, propB, next;
     JFileChooser fc = new JFileChooser();
+    java.io.File old, trans;
     ArrayList<java.io.File> theFiles;String everything;
     Label s = new Label(), Quest = new Label();
     Checkbox a, b, c, d, e;
@@ -55,7 +58,7 @@ public class Take {
         setup();
         screen = true;   
     }
-    public void Taking(boolean b) {
+    public void Taking(java.io.File f) {
         start.setVisible(true);
         main.setVisible(false);
         prop.setVisible(false);
@@ -65,7 +68,9 @@ public class Take {
         takePane.setLayout(layout);//
         secondT = false;
         Qnumber = 0;
-        screen = true;   
+        screen = true;
+        old = f;
+        restart();
         //start.setResizable(false);
     }
     
@@ -125,12 +130,12 @@ public class Take {
     }
     public void layout() {
         int x = 50, y = 80;
-        Layout(drop,170,70); //Why is there an error here
         if(secondT) {
         Layout(propB, 230,30);
-        }
         Layout(getQuiz,100,30);
         Layout(s, 120, 150);
+        Layout(drop,170,70);
+        }
         Layout(next, 130, 180);
         
         
@@ -166,15 +171,23 @@ public class Take {
         }
     }
     
-    public void start() {
+    public void start() { //ADD TONNES OF TRY-CATCH STATEMENTS
+        boolean startWell = true;
         System.out.println("");
-           getQuiz.setEnabled(false);
+           if(secondT) getQuiz.setEnabled(false);
            drop.setEnabled(false);
            //get the properties
-           java.io.File quizProp = theFiles.get(drop.getSelectedIndex());
-
+           java.io.File quizProp;
+           if(secondT) {
+                quizProp = theFiles.get(drop.getSelectedIndex());
+                trans = quizProp;
+           } else {
+                quizProp = old;
+                trans = quizProp;
+           }
+           BufferedReader br;
            try {
-                BufferedReader br = new BufferedReader(new FileReader(quizProp));
+                br = new BufferedReader(new FileReader(quizProp));
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine(); //get each line
 
@@ -187,8 +200,16 @@ public class Take {
                 br.close();
            } catch(IOException e) {
                 System.out.println(e);
+                s.setText("Error: Could not read file");
+                startWell = false;
+                
+           } catch(NullPointerException e){
+               System.out.println(e);
+                //("Error: Does not Exist");
+                startWell = false;
            }
            
+           //try
            everything = everything.replaceAll("QUIZ Data", ""); //get rid of the title
            everything = everything.trim(); //remove whitesapce
            String[] ArrayString2, ArrayString = everything.split("\n"); //seperate everything line by line
@@ -212,7 +233,7 @@ public class Take {
            int i = 0;
            for(String a: ArrayString){
                if(i == l) break;
-                    ArrayString[i] = betterReplace(a, 0); //YESYEYSYEYSYYYEYYSYEYSYEYES
+                    ArrayString[i] = betterReplace(a, 0); //Finnaly replaces the brackets with nothing to be parced.
                     //ArrayString[i] = a.replaceAll("]", "");
                     System.out.println(ArrayString[i]);
                i++;
@@ -221,7 +242,11 @@ public class Take {
            for(String a: wrongAnswers) {
                System.out.println(a);//here's an idea, do method chaining
            }
+           
+           //catch 
+           
            //Properties
+           //try
             System.out.println(ArrayString[0]);
            String scan = betterReplace(ArrayString[0], 0);
            timerV = scan.contains("Ttrue");
@@ -233,6 +258,9 @@ public class Take {
                System.out.println(x);
            }
            repeatV = scan.contains("Rtrue");
+           //catch
+           
+           //try
            if(repeatV){
                String x = scan.substring(scan.indexOf("t: ") + 1);
                x = x.substring(0, x.indexOf(","));
@@ -240,27 +268,36 @@ public class Take {
                repeatTime = Integer.parseInt(x);
                System.out.println(x);
            }
+           //catch
+           
+           //try
            if(scan.contains("PQ5")) perQuest = 5;
            if(scan.contains("PQ4")) perQuest = 4;
            if(scan.contains("PQ3")) perQuest = 3;
            if(scan.contains("PQ2")) perQuest = 2;
-               
-               String x = scan.substring(scan.indexOf("= ") + 1);
-               x = x.substring(0, x.indexOf(","));
-               x = betterReplace(x , 2);
-               repeatTime = Integer.parseInt(x);
-               Qnumber = Integer.parseInt(x);
-               System.out.println(x);
+           //catch
            
-               
-              // x = scan.replaceAll(".*%", "");
-               x = scan.substring(scan.indexOf("%") + 1);
-               x = x.substring(0, x.indexOf("%"));
-               x = betterReplace(x , 2);
-               percent = Integer.parseInt(x);
-               System.out.println(x);
-           //
+           //try
+           String x = scan.substring(scan.indexOf("= ") + 1);
+           x = x.substring(0, x.indexOf(","));
+           x = betterReplace(x , 2);
+           repeatTime = Integer.parseInt(x);
+           Qnumber = Integer.parseInt(x);
+           System.out.println(x);
+           //catch
            
+           //try
+               
+           // x = scan.replaceAll(".*%", "");
+           x = scan.substring(scan.indexOf("%") + 1);
+           x = x.substring(0, x.indexOf("%"));
+           x = betterReplace(x , 2);
+           percent = Integer.parseInt(x);
+           System.out.println(x);
+           //catch
+           
+           
+           //try
            ArrayString2 = ArrayString[l].split("\\|"); //splits up wrong answers
            //spitting this up into that mutidimentional list
            ArrayList<String> tempList = new ArrayList<String>();
@@ -309,12 +346,12 @@ public class Take {
                 tempA[n] = arrayToString(temperA);
                 // =====END removing brackets======
                 
-                //Collections.addAll(tempList, tempA);
-                if(i == 0) oneA = tempA;
-                if(i == 1) twoA = tempA;
-                if(i == 2) threeA = tempA;
-                if(i == 3) fourA = tempA;
-                i++; //fix ize problem
+            //Collections.addAll(tempList, tempA);
+           if(i == 0) oneA = tempA;
+           if(i == 1) twoA = tempA;
+           if(i == 2) threeA = tempA;
+           if(i == 3) fourA = tempA;
+           i++; 
            }
            ArrayList<String> temp =  new ArrayList<String>(Arrays.asList(oneA));
            WAnswer.add(0, temp);
@@ -332,14 +369,16 @@ public class Take {
            }
            //END WANSWER ADDING
            
-           //Done. now for the other two.
+           //catch
+           
+           //try
            QuestA.clear();
            tempA = ArrayString[1].split(",");
            Collections.addAll(QuestA, tempA);
            RAnswer.clear();
            tempA = ArrayString[2].split(",");
            Collections.addAll(RAnswer, tempA); 
-           //done.
+           //catch //final
            
            //now for the properties.
            System.out.println("WAnswer:" + WAnswer);
@@ -434,6 +473,7 @@ public class Take {
         token = s.toString();
         return token;
     }
+    
     public void quizSetup() {
         next.setEnabled(false);
         screen = false;
@@ -467,7 +507,7 @@ public class Take {
         Layout(next, 130, 400);
         printd("Quizsetupbeforecount: " + count);
         count = Qnumber;
-        qSetup(0);
+        nextQuestion(0);
         printd("QuizsetupAFTERcount: " + count);
         a.addItemListener(new canMove());
         b.addItemListener(new canMove());
@@ -479,6 +519,7 @@ public class Take {
     private class canMove implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent ie) {
+            if(a.getState() || b.getState() || c.getState() || d.getState() || e.getState())
             next.setEnabled(true);
         }
     }
@@ -499,7 +540,7 @@ public class Take {
                 } else {
                     Qwrong = Qwrong + 1;
                 }
-                qSetup(Qnumber - count);
+                nextQuestion(Qnumber - count);
                 if(Ans.getSelectedCheckbox() == null) next.setEnabled(false);
                 
             }
@@ -508,9 +549,9 @@ public class Take {
     }
     public void leave() {
         Score s = new Score();
-        s.scoring();
+        s.scoring(trans);
     }
-    public void qSetup(int i) {
+    public void nextQuestion(int i) {
         //WAnswer.get(0).size() = how many answer choices there are
         //WAnswer.size() = how many questios there are
         printd("Went into qSetup");
@@ -550,7 +591,7 @@ public class Take {
             toRand.add(WAnswer.get(3).get(i)); 
             else e.setLabel("Error: Doesn't Exist");
         }
-       Random r = new Random(Math.abs(System.nanoTime())); //this sounds awesome
+       Random r = new Random(Math.abs(System.nanoTime() * System.currentTimeMillis())); //this sounds awesome
        Collections.shuffle(toRand,r);
        
        
@@ -560,12 +601,32 @@ public class Take {
            if(j == 2)c.setLabel(toRand.get(2));
            if(j == 3)d.setLabel(toRand.get(3));
            if(j == 4)e.setLabel(toRand.get(4));
+           
+       if(!secondT) start.setVisible(true);
        }
        
        
        Quest.setText(QuestA.get(i));
        if(count > 0) count = (count - 1);
 
+    }
+    public void restart() {
+        next = new Button("Take Quiz");
+        takePane.add(next);
+        next.addActionListener(new Move());
+        next.setEnabled(false);
+        next.setPreferredSize(new Dimension(200,40));
+        takePane = start.getContentPane();
+        takePane.setLayout(layout);
+        a = new Checkbox("",false,Ans);takePane.add(a);
+        b = new Checkbox("",false,Ans);takePane.add(b);
+        c = new Checkbox("",false,Ans);takePane.add(c);
+        d = new Checkbox("",true,Ans);takePane.add(d);
+        e = new Checkbox("",true,Ans);takePane.add(e);
+        Quest = new Label();
+        start.setVisible(false);
+        start();
+        quizSetup();
     }
     public String arrayToString(String[] arr) {
         StringBuilder result = new StringBuilder();

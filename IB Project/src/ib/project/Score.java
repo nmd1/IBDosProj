@@ -16,6 +16,7 @@ public class Score {
     Container scorerPane;
     SpringLayout layout = new SpringLayout();
     Label rightL, percentL, timeL;
+    java.io.File transfer;
     
     public Score() {
         scor.addMouseListener(new PanelListener());
@@ -30,11 +31,20 @@ public class Score {
     }
     
     
-    public void scoring() {
-        scor.setVisible(true);
+    public void scoring(java.io.File h) {
+        
         start.setVisible(false);
+
+        scor.removeAll();
+        scor = new JFrame();
+        scor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        scor.setLocationRelativeTo(null);
+        scor.setResizable(true);
         scorerPane = scor.getContentPane();
         scorerPane.setLayout(layout);
+        scor.setTitle("Your Results");
+        scor.setSize(320,250);
+        transfer = h;
         setup();
     }
     
@@ -49,7 +59,7 @@ public class Score {
         rightL = new Label("You got " + Qright + " Questions right");
         rightL.setFont(f);
         scorerPane.add(rightL);
-        double total = RAnswer.size() - 1;
+        double total = RAnswer.size();
         double d = (Qright / total) * 100;
         percentL = new Label(d+"%");
         percentL.setFont(new Font("Verdana", Font.PLAIN, 25));
@@ -66,14 +76,13 @@ public class Score {
         mainMB.setPreferredSize(di);
         scorerPane.add(mainMB);
         mainMB.addActionListener(new menu());
-        
         Layouts();
-        
+        scor.setVisible(true);
     }
     public void Layouts() {
         int x=0,y=0;
         Layout(exitB, 10, 165);
-        Layout(rightL, 55, 0);
+        Layout(rightL, 55, 10);
         Layout(percentL, 110, 80);
         Layout(reTakeB, 115, 165);
         Layout(mainMB,215, 165);
@@ -82,6 +91,7 @@ public class Score {
     private class menu implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
+            scor.setVisible(false);
             Reset r = new Reset();
             r.destroy();
         }
@@ -98,7 +108,8 @@ public class Score {
             Reset r = new Reset();
             Take t = new Take();
             //r.resetTake();
-            t.Taking(false);
+            Qright = 0;
+            t.Taking(transfer);
             ////////////
             
         }
