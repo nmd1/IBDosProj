@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.text.DecimalFormat;
 import javax.swing.*;
 
 public class Score {
@@ -70,7 +71,9 @@ public class Score {
         scorerPane.add(rightL);
         double total = RAnswer.size();
         double d = (Qright / total) * 100;
-        percentL = new Label(d+"%");
+        DecimalFormat df = new DecimalFormat("#.00");
+        
+        percentL = new Label(df.format(d)+"%");
         percentL.setFont(labf);
         scorerPane.add(percentL);
         
