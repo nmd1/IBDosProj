@@ -27,7 +27,7 @@ public class Take {
     JFileChooser fc = new JFileChooser();
     java.io.File old, trans;
     ArrayList<java.io.File> theFiles;String everything;
-    Label s = new Label(), Quest = new Label();
+    JLabel s = new JLabel(), Quest = new JLabel();
     Checkbox a, b, c, d, e;
     Date startDate;
     CheckboxGroup Ans = new CheckboxGroup();
@@ -132,7 +132,7 @@ public class Take {
         layout();
     }
     public void layout() {
-        int x = 50, y = 80;
+        int x = 50, y = 100;
         if(secondT) {
         Layout(propB, 230,30);
         Layout(getQuiz,100,30);
@@ -479,6 +479,9 @@ public class Take {
     }
     
     public void quizSetup() {
+        double div = percent / 100;
+        double newnumb = Qnumber * div;
+        Qnumber = (int) Math.round(newnumb);
         hour  = Calendar.HOUR;
         minute = Calendar.MINUTE;
         printd("Hour & Minute: " + hour + ":" + minute);
@@ -632,7 +635,7 @@ public class Take {
        }
        
        
-       Quest.setText(QuestA.get(i));
+       Quest.setText("<html><p>"+QuestA.get(i)+"</p></html>");
        if(count > 0) count = (count - 1);
 
     }
@@ -649,7 +652,7 @@ public class Take {
         c = new Checkbox("",false,Ans);takePane.add(c);
         d = new Checkbox("",true,Ans);takePane.add(d);
         e = new Checkbox("",true,Ans);takePane.add(e);
-        Quest = new Label();
+        Quest = new JLabel();
         start.setVisible(false);
         start();
         quizSetup();

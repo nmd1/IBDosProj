@@ -114,8 +114,8 @@ public class Score {
         @Override
         public void actionPerformed(ActionEvent ae) {
             scor.setVisible(false);
-            Reset r = new Reset();
-            r.destroy();
+            mainRun();
+            main.setVisible(true);
         }
     }
     private class exit implements ActionListener {
@@ -127,9 +127,7 @@ public class Score {
     private class back implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Reset r = new Reset();
             Take t = new Take();
-            //r.resetTake();
             Qright = 0;
             t.Taking(transfer, countTake);
             ////////////

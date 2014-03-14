@@ -14,6 +14,7 @@ public class Main extends JPanel {
     static Button makeB, takeB, helpB;
     static Checkbox check;
     public static Choice equations;
+    static SpringLayout myLayout;
     //static String properties;
     static ArrayList<String> properties = new ArrayList<String>();
     static ArrayList<String> QuestA = new ArrayList<String>();
@@ -33,7 +34,7 @@ public class Main extends JPanel {
         main.update(null);
         main.setTitle("Main Menu");
         newPanel(main);
-        main.setSize(500,200);
+        main.setSize(340,290);
         main.setResizable(true);
         //main.add() //We'll see if we need this later
         
@@ -63,7 +64,7 @@ public class Main extends JPanel {
         // JObjects
         
         //buttons
-        Dimension a = new Dimension(100,40);
+        Dimension a = new Dimension(120, 100);
         makeB = new Button("Make A Quiz");
         makeB.setPreferredSize(a);
         makeB.addActionListener(new making());
@@ -71,7 +72,7 @@ public class Main extends JPanel {
         takeB.setPreferredSize(a);
         takeB.addActionListener(new taking());
         helpB = new Button("Help");
-        helpB.setPreferredSize(new Dimension(70,40));
+        helpB.setPreferredSize(new Dimension(120,50));
         helpB.addActionListener(new info());
         
         //Labels
@@ -81,22 +82,33 @@ public class Main extends JPanel {
         
         //panes
         pane = main.getContentPane();
-        FlowLayout myLayout = new FlowLayout();
+        myLayout = new SpringLayout();
         pane.setLayout(myLayout);
         pane.add(lblmain);
         pane.add(makeB);
         pane.add(takeB);
         pane.add(helpB);
+        Layout(makeB, 20, 40);
+        Layout(takeB, 180, 40);
+        Layout(helpB, 100, 170);
+        Layout(lblmain, 90, 10);
         
-        main.setVisible(true);        
+        main.setVisible(true);
+        
     }
-    
+    public static void Layout(Component c, int x, int y) {
+        myLayout.putConstraint(SpringLayout.WEST, c,x, SpringLayout.WEST, pane);
+        myLayout.putConstraint(SpringLayout.NORTH, c,y,SpringLayout.NORTH, pane);
+    }
     private static class info implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            String message = "Choose 'Make' to make a quiz or choose" +
-                    "'Take' to take a quiz.\n Making a quiz will display a set of" +
-                    " options that you can choose that will customize your quiz";
+            String message = "Choose 'Make a Quiz' to go to the quiz creation screen. \n"
+                    + "From there, fill in the information for a quiz you would like to create.\n"
+                    + "You can choose where you would like to save the created quiz, or just take it right there.\n"
+                    + "Choose 'Take a quiz' to take a previosuly created quiz.\n"
+                    + "You will be prompted to find the folder where you saved a quiz (or more than one), and from there\n"
+                    + "you can choose a quiz from the folder and take it.\n ";
             JOptionPane.showMessageDialog(null, message, "Information About Program", 3);
         }
     }
